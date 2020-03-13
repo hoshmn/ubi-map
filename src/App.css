@@ -5,12 +5,3 @@ body { margin:0; padding:0; min-height: 500px; }
 }
 @media (max-width: 991px) {
 }
-
-.mapboxgl-popup {
-    background: wheat;
-    position: relative;
-}
-
-.mapboxgl-popup.mapboxgl-popup-anchor-bottom {
-    bottom: 30px;
-}

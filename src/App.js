@@ -13,7 +13,7 @@ class App extends React.Component {
       lat: 40.66995747013945,
       lng: -103.59179687498357,
       zoom: 3,
-      lastHoveredId: null,
+      hovered: {},
       selectedIdMap: {}
     };
 
@@ -66,18 +66,20 @@ class App extends React.Component {
   featuresOnHover(e) {
     this.map.getCanvas().style.cursor = 'pointer';
     const { geometry, id, properties } = e.features[0];
-    this.setState({ lastHoveredId: id });
+    const { name, location } = properties;
+    const { x, y } = e.point;
+    this.setState({ hovered: { id, name, location, x, y } });
     this.map.setFeatureState({
         source: 'media',
         id
       }, { hover: true }
     );
 
-    const html = `<div><p>Name: ${properties.name}</p><p>Location: ${properties.location}</p></div>`;
-    this.popup
-      .setLngLat(geometry.coordinates.slice())
-      .setHTML(html)
-      .addTo(this.map)
+  //   const html = `<div><p>Name: ${properties.name}</p><p>Location: ${properties.location}</p></div>`;
+  //   this.popup
+  //     .setLngLat(geometry.coordinates.slice())
+  //     .setHTML(html)
+  //     .addTo(this.map)
   }
 
   featuresOnUnhover() {
@@ -85,16 +87,19 @@ class App extends React.Component {
     this.map.getCanvas().style.cursor = '';
     this.map.setFeatureState({
         source: 'media',
-        id: this.state.lastHoveredId
+        id: this.state.hovered.id
       }, { hover: false }
     );
 
-    this.popup.remove();
+    // this.popup.remove();
+    this.setState({ hovered: {} });
   }
   
   render() {
+    const { name, location, x, y } = this.state.hovered;
     return (
       <div>
+        {x && <div style={{position: 'absolute', left: x+'px', top: y+'px'}}><div>Name: {name}</div><div>Location: {location}</div></div>}
         <div ref={el => this.mapContainer = el} className='map-container' />
       </div>
     )
