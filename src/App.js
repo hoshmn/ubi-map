@@ -2,28 +2,6 @@ import React from 'react';
 import './App.css';
 import mapboxgl from 'mapbox-gl';
 import styleData from './style.json';
-console.log(styleData);
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
 
 var SHEET_URL = 'https://spreadsheets.google.com/feeds/list/1gyAdUp3tekxAtz8fibILM-zHyX5CXh5OuY0Xbjxhijw/1/public/full?alt=json';
 mapboxgl.accessToken = 'pk.eyJ1IjoiZXZpY3Rpb24tbGFiIiwiYSI6ImNqY20zamVpcTBwb3gzM28yb292YzM3dXoifQ.uKgAjsMd4qkJNqEtr3XyPQ';
@@ -34,7 +12,9 @@ class App extends React.Component {
     this.state = {
       lat: 40.66995747013945,
       lng: -103.59179687498357,
-      zoom: 3
+      zoom: 3,
+      lastHoveredId: null,
+      selectedIdMap: {}
     };
 
     this.map = null;
@@ -46,8 +26,8 @@ class App extends React.Component {
       style: styleData,
       center: [this.state.lng, this.state.lat],
       zoom: this.state.zoom,
-      height: '100vh',
-      width: '100vw',
+      // height: '140vh',
+      // width: '100vw',
     });
     
     this.map.on('move', () => {
@@ -60,73 +40,56 @@ class App extends React.Component {
 
     this.map.on('click', 'clusters', this.featuresOnClick.bind(this));
     this.map.on('mouseenter', 'clusters', this.featuresOnHover.bind(this));
+    this.map.on('mouseleave', 'clusters', this.featuresOnUnhover.bind(this));
 
 
     load.call(this); 
   }
 
   featuresOnClick(e) {
-    if (e.originalEvent.cancelBubble) {
-        return;
-    } else { // prevent click event from passing along to other nearby clusters
-        e.originalEvent.cancelBubble = true;
-    }
-    if (e.features.length === 0) { return; }
-    var coords = e.features[0].geometry.coordinates;
-    if (!e.features[0].properties.hasOwnProperty('point_count')) {
-        // single item
-        // this.addCard(coords, e.features);
-
-        const point = e.features[0];
-        this.map.setFeatureState({
-          source: 'media',
-          id: point.id
-        }, {
-          selected: true
-        });
-        return;
-    }
+    const {id } = e.features[0];
+    const shouldSelect = !this.state.selectedIdMap[id];
+    this.setState({ 
+      selectedIdMap: { ...this.state.selectedIdMap, [id]: shouldSelect }
+    });
+    this.map.setFeatureState({
+        source: 'media',
+        id
+      }, { selected: shouldSelect }
+    );
   }
 
   featuresOnHover(e) {
-    if (e.originalEvent.cancelBubble) {
-        return;
-    } else { // prevent Hover event from passing along to other nearby clusters
-        e.originalEvent.cancelBubble = true;
-    }
-    if (e.features.length === 0) { return; }
-    var coords = e.features[0].geometry.coordinates;
-    if (!e.features[0].properties.hasOwnProperty('point_count')) {
-        // single item
-        // this.addCard(coords, e.features);
+    this.map.getCanvas().style.cursor = 'pointer';
+    const { id } = e.features[0];
+    this.setState({ lastHoveredId: id });
+    this.map.setFeatureState({
+        source: 'media',
+        id
+      }, { hover: true }
+    );
+  }
 
-        const point = e.features[0];
-        this.map.setFeatureState({
-          source: 'media',
-          id: point.id
-        }, {
-          hover: true
-        });
-        return;
-    }
+  featuresOnUnhover() {
+    this.map.getCanvas().style.cursor = '';
+    this.map.setFeatureState({
+        source: 'media',
+        id: this.state.lastHoveredId
+      }, { hover: false }
+    );
   }
   
   render() {
     return (
       <div>
-      <div className='sidebarStyle'>
-        <div>Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom: {this.state.zoom}</div>
+        <div ref={el => this.mapContainer = el} className='map-container' />
       </div>
-      <div ref={el => this.mapContainer = el} className='map-container' />
-    </div>
     )
   }
 }
 
 function load () {
-  /**
-   * startsWith polyfill
-   */
+  // startsWith polyfill
   if (!String.prototype.startsWith) {
     Object.defineProperty(String.prototype, 'startsWith', {
         value: function(search, rawPos) {
@@ -136,16 +99,6 @@ function load () {
     });
   }
 
-  // this.map.on('mouseenter', 'clusters', (exx) => {
-  //   this.map.getCanvas().style.cursor = 'pointer';
-  // });
-  // this.map.on('mouseleave', 'clusters', (exx) => {
-  //   this.map.getCanvas().style.cursor = '';
-  // });
-  
-  // this.map.on('click', 'clusters', this.featuresOnClick.bind(this));
-
-  // the mediaData variables contain the complete set of data returned from gSheets
   var mediaData = { type: 'FeatureCollection', features: [] };
 
   const reqHandler = (source, req) => {
@@ -189,6 +142,5 @@ function load () {
   mediaReq.send();
 }
 
-// ReactDOM.render(<App />, document.getElementById('app'));
 export default App;
 
