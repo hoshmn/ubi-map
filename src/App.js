@@ -1,9 +1,7 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import './style.json';
-import styleData from './style.json';
 import mapboxgl from 'mapbox-gl';
+import styleData from './style.json';
 console.log(styleData);
 
 // function App() {
@@ -61,6 +59,7 @@ class App extends React.Component {
     });
 
     this.map.on('click', 'clusters', this.featuresOnClick.bind(this));
+    this.map.on('mouseenter', 'clusters', this.featuresOnHover.bind(this));
 
 
     load.call(this); 
@@ -70,6 +69,29 @@ class App extends React.Component {
     if (e.originalEvent.cancelBubble) {
         return;
     } else { // prevent click event from passing along to other nearby clusters
+        e.originalEvent.cancelBubble = true;
+    }
+    if (e.features.length === 0) { return; }
+    var coords = e.features[0].geometry.coordinates;
+    if (!e.features[0].properties.hasOwnProperty('point_count')) {
+        // single item
+        // this.addCard(coords, e.features);
+
+        const point = e.features[0];
+        this.map.setFeatureState({
+          source: 'media',
+          id: point.id
+        }, {
+          selected: true
+        });
+        return;
+    }
+  }
+
+  featuresOnHover(e) {
+    if (e.originalEvent.cancelBubble) {
+        return;
+    } else { // prevent Hover event from passing along to other nearby clusters
         e.originalEvent.cancelBubble = true;
     }
     if (e.features.length === 0) { return; }
@@ -147,7 +169,7 @@ function load () {
       });
       return {
         type: 'Feature',
-        id: ri,
+        id: row.idd,
         geometry: {
           type: 'Point',
           coordinates: [row.longitude, row.latitude]
