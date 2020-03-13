@@ -1,4 +1,5 @@
 import React from 'react';
+import Tooltip from './Tooltip';
 import './App.css';
 import mapboxgl from 'mapbox-gl';
 import styleData from './style.json';
@@ -74,16 +75,9 @@ class App extends React.Component {
         id
       }, { hover: true }
     );
-
-  //   const html = `<div><p>Name: ${properties.name}</p><p>Location: ${properties.location}</p></div>`;
-  //   this.popup
-  //     .setLngLat(geometry.coordinates.slice())
-  //     .setHTML(html)
-  //     .addTo(this.map)
   }
 
   featuresOnUnhover() {
-    return;
     this.map.getCanvas().style.cursor = '';
     this.map.setFeatureState({
         source: 'media',
@@ -91,15 +85,13 @@ class App extends React.Component {
       }, { hover: false }
     );
 
-    // this.popup.remove();
     this.setState({ hovered: {} });
   }
   
   render() {
-    const { name, location, x, y } = this.state.hovered;
     return (
       <div>
-        {x && <div style={{position: 'absolute', left: x+'px', top: y+'px'}}><div>Name: {name}</div><div>Location: {location}</div></div>}
+        <Tooltip {...this.state.hovered} />
         <div ref={el => this.mapContainer = el} className='map-container' />
       </div>
     )
@@ -148,7 +140,7 @@ function load () {
         properties: row
       };
     });
-    // add fetched items into either the mediaData or lmsData object
+
     mediaData = { type: 'FeatureCollection', features: items };
     this.map.getSource('media').setData(mediaData);
   }
