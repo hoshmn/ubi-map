@@ -42,6 +42,10 @@ class App extends React.Component {
     this.map.on('mouseenter', 'clusters', this.featuresOnHover.bind(this));
     this.map.on('mouseleave', 'clusters', this.featuresOnUnhover.bind(this));
 
+    this.popup = new mapboxgl.Popup({
+      closeButton: true,
+      closeOnClick: true
+    });
 
     load.call(this); 
   }
@@ -61,22 +65,31 @@ class App extends React.Component {
 
   featuresOnHover(e) {
     this.map.getCanvas().style.cursor = 'pointer';
-    const { id } = e.features[0];
+    const { geometry, id, properties } = e.features[0];
     this.setState({ lastHoveredId: id });
     this.map.setFeatureState({
         source: 'media',
         id
       }, { hover: true }
     );
+
+    const html = `<div><p>Name: ${properties.name}</p><p>Location: ${properties.location}</p></div>`;
+    this.popup
+      .setLngLat(geometry.coordinates.slice())
+      .setHTML(html)
+      .addTo(this.map)
   }
 
   featuresOnUnhover() {
+    return;
     this.map.getCanvas().style.cursor = '';
     this.map.setFeatureState({
         source: 'media',
         id: this.state.lastHoveredId
       }, { hover: false }
     );
+
+    this.popup.remove();
   }
   
   render() {
