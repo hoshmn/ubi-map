@@ -60,7 +60,33 @@ class App extends React.Component {
       });
     });
 
+    this.map.on('click', 'clusters', this.featuresOnClick.bind(this));
+
+
     load.call(this); 
+  }
+
+  featuresOnClick(e) {
+    if (e.originalEvent.cancelBubble) {
+        return;
+    } else { // prevent click event from passing along to other nearby clusters
+        e.originalEvent.cancelBubble = true;
+    }
+    if (e.features.length === 0) { return; }
+    var coords = e.features[0].geometry.coordinates;
+    if (!e.features[0].properties.hasOwnProperty('point_count')) {
+        // single item
+        // this.addCard(coords, e.features);
+
+        const point = e.features[0];
+        this.map.setFeatureState({
+          source: 'media',
+          id: point.id
+        }, {
+          hover: true
+        });
+        return;
+    }
   }
   
   render() {
@@ -108,7 +134,7 @@ function load () {
       })
       .map(function (p) { return p.substr(4); });
     
-    var items = rows.map(function (r) {
+    var items = rows.map(function (r, ri) {
       var row = {};
       properties.forEach(function (p) {
         row[p] = r["gsx$" + p].$t === "" ? null : r["gsx$" + p].$t;
@@ -121,6 +147,7 @@ function load () {
       });
       return {
         type: 'Feature',
+        id: ri,
         geometry: {
           type: 'Point',
           coordinates: [row.longitude, row.latitude]
