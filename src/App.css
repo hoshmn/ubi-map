@@ -2,7 +2,7 @@ body { margin:0; padding:0; min-height: 500px; }
 .map-container { position:absolute; top:0; bottom:0; width:100%; }
 
 .tooltip {
-    z-index: 1;
+    z-index: 10;
     background: white;
     border: black solid 1px;
     position: relative;
@@ -12,6 +12,12 @@ body { margin:0; padding:0; min-height: 500px; }
 
 .tooltip h6 {
     margin: 0;
+}
+
+.card-dock {
+    position: absolute;
+    bottom: 0;
+    z-index: 5;
 }
 
 @media (max-width: 768px) {

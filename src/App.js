@@ -1,11 +1,13 @@
 import React from 'react';
+import CardDock from './CardDock';
 import Tooltip from './Tooltip';
 import './App.css';
 import mapboxgl from 'mapbox-gl';
 import styleData from './style.json';
 
-var SHEET_URL = 'https://spreadsheets.google.com/feeds/list/1gyAdUp3tekxAtz8fibILM-zHyX5CXh5OuY0Xbjxhijw/1/public/full?alt=json';
+const SHEET_URL = 'https://spreadsheets.google.com/feeds/list/1gyAdUp3tekxAtz8fibILM-zHyX5CXh5OuY0Xbjxhijw/1/public/full?alt=json';
 mapboxgl.accessToken = 'pk.eyJ1IjoiZXZpY3Rpb24tbGFiIiwiYSI6ImNqY20zamVpcTBwb3gzM28yb292YzM3dXoifQ.uKgAjsMd4qkJNqEtr3XyPQ';
+const MAX_SELECTED_POINTS = 5;
 
 class App extends React.Component {
   constructor(props) {
@@ -15,10 +17,11 @@ class App extends React.Component {
       lng: -103.59179687498357,
       zoom: 3,
       hovered: {},
-      selectedIdMap: {}
+      selectedIds: []
     };
 
     this.map = null;
+    this.getCardDock = this.getCardDock.bind(this);
   }
   
   componentDidMount() {
@@ -27,8 +30,6 @@ class App extends React.Component {
       style: styleData,
       center: [this.state.lng, this.state.lat],
       zoom: this.state.zoom,
-      // height: '140vh',
-      // width: '100vw',
     });
     
     this.map.on('move', () => {
@@ -43,24 +44,34 @@ class App extends React.Component {
     this.map.on('mouseenter', 'clusters', this.featuresOnHover.bind(this));
     this.map.on('mouseleave', 'clusters', this.featuresOnUnhover.bind(this));
 
-    this.popup = new mapboxgl.Popup({
-      closeButton: true,
-      closeOnClick: true
-    });
-
     load.call(this); 
   }
 
   featuresOnClick(e) {
     const {id } = e.features[0];
-    const shouldSelect = !this.state.selectedIdMap[id];
+    const selectedIds = [...this.state.selectedIds];
+    const idx = selectedIds.indexOf(id);
+    const alreadySelected = idx > -1;
+
+    if (!alreadySelected) {
+      if (selectedIds.length >= MAX_SELECTED_POINTS) {
+        console.log('OH SHET!');
+        // warn user
+        return;
+      } else {
+        selectedIds.push(id);
+      }
+    } else {
+      selectedIds.splice(idx, 1);
+    }
+
     this.setState({ 
-      selectedIdMap: { ...this.state.selectedIdMap, [id]: shouldSelect }
+      selectedIds: selectedIds
     });
     this.map.setFeatureState({
         source: 'media',
         id
-      }, { selected: shouldSelect }
+      }, { selected: !alreadySelected }
     );
   }
 
@@ -87,11 +98,27 @@ class App extends React.Component {
 
     this.setState({ hovered: {} });
   }
+
+  getCardDock() {
+    console.log(this.state.selectedIds);
+
+    if (!this.map || !this.state.selectedIds.length) {
+      return null;
+    }
+    const { features } = this.map.getSource('media')._data;
+    const cardData = this.state.selectedIds.map(id => {
+      return features.find(f => Number(f.id) === id).properties;
+    });
+
+    console.log(cardData);
+    return <CardDock cardData={cardData} />
+  }
   
   render() {
     return (
       <div>
         <Tooltip {...this.state.hovered} />
+        {this.getCardDock()}
         <div ref={el => this.mapContainer = el} className='map-container' />
       </div>
     )
@@ -153,4 +180,3 @@ function load () {
 }
 
 export default App;
-
