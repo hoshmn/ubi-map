@@ -1,24 +1,78 @@
 body { margin:0; padding:0; min-height: 500px; }
+
+html, body, #root, .app {
+    height: 100%;
+}
+
+/* MAP */
 .map-container { position:absolute; top:0; bottom:0; width:100%; }
 
+/* TOOLTIP */
 .tooltip {
     z-index: 10;
     background: white;
     border: black solid 1px;
-    position: relative;
+    /* overflows map with absolute */
+    position: fixed;
     padding: 4px;
     max-width: 175px;
-}
-
-.tooltip h6 {
     margin: 0;
 }
 
-.card-dock {
-    position: absolute;
-    bottom: 0;
-    z-index: 5;
+.tooltip .detail {
+    max-height: 70px;
+    overflow: hidden;
 }
+
+.tooltip .name {
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.tooltip h6, .tooltip .location {
+    margin: 0;
+    display: inline;
+}
+
+/* CARD DOCK */
+table.card-dock {
+    z-index: 5;
+    table-layout: fixed;
+    position: fixed;
+    /* top of dock should sit 250px from bottom */
+    top: calc(100vh - 120px); 
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 500px;
+    background: #f2f2f2;
+}
+
+th {
+    background: white;
+    font-size: 13px;
+}
+.card-dock .property-row {
+    /* display: flex; */
+}
+.card-dock .property-name, .tooltip .location {
+    font-weight: bold;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: grey;
+    display: inline;
+}
+
+.property-value, .tooltip .detail {
+    font-size: 12px;
+}
+
+.property-cell {
+    vertical-align: top;
+}
+
+tr:nth-child(odd) {background-color: #f7f7f7;} 
+tr:nth-child(even) {background-color: #ffffff;} 
 
 @media (max-width: 768px) {
 }

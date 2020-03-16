@@ -11,8 +11,11 @@ class Tooltip extends React.Component {
 
     return (
         <div className='tooltip' style={{left: x+'px', top: y+5+'px'}}>
-            <div>Name: {name||'(none)'}</div>
-            <div>Location: {location}</div>
+            <div className='name'>{name||'(none)'}</div>
+            <div className='detail'>
+              <p className='location'>Location:</p>
+              {location}
+            </div>
             <h6>click point for more info</h6>
         </div>
     )

@@ -116,10 +116,10 @@ class App extends React.Component {
   
   render() {
     return (
-      <div>
-        <Tooltip {...this.state.hovered} />
+      <div className="app">
         {this.getCardDock()}
         <div ref={el => this.mapContainer = el} className='map-container' />
+        <Tooltip {...this.state.hovered} />
       </div>
     )
   }

@@ -215,8 +215,8 @@
             ["boolean", ["feature-state", "selected"], false],
             1,
             ["boolean", ["feature-state", "hover"], false],
-            0.8,
-            0.5
+            0.7,
+            0.4
           ],
             "circle-radius": 5,
             "circle-stroke-width": 0
