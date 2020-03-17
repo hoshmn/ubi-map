@@ -1,4 +1,5 @@
 import CardDock from './CardDock';
+import Legend from './Legend';
 import React from 'react';
 import Tooltip from './Tooltip';
 import mapboxgl from 'mapbox-gl';
@@ -129,6 +130,7 @@ class App extends React.Component {
         {this.getCardDock()}
         <div ref={el => this.mapContainer = el} className='map-container' />
         <Tooltip {...this.state.hovered} />
+        <Legend />
       </div>
     )
   }

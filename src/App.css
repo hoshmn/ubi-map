@@ -18,6 +18,44 @@ html, body, #root, .app {
   width: 100%;
 }
 
+/* LEGEND */
+.legend {
+  position: fixed;
+  top: 8px;
+  right: 8px;
+  background: white;
+  padding: 8px;
+  border-radius: 4px;
+  font-weight: lighter;
+  font-size: 12px;
+  text-transform: uppercase;
+  box-shadow: rgba(0, 0, 0, 0.1) 3px 3px 5px;
+}
+
+.legend div {
+  padding: 4px;
+}
+
+.legend i {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  border-radius: 5px;
+  margin-right: 8px;
+}
+
+.legend i.past {
+  background: rgb(0,80,92);
+}
+
+.legend i.ongoing {
+  background: rgb(223,70,73);
+}
+
+.legend i.proposed {
+  background: rgb(175,105,12);
+}
+
 /* TOOLTIP */
 .tooltip {
   z-index: 10;
@@ -69,6 +107,7 @@ table.card-dock {
   border-top: #c0c0c0 solid 7px;
   border-radius: 4px;
   transition: top 0.6s ease;
+  box-shadow: rgba(0, 0, 0, 0.1) 2px 2px 4px;
 }
 
 table.card-dock.maximized {
