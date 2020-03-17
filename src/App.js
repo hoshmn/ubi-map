@@ -117,7 +117,7 @@ class App extends React.Component {
     }
     const { features } = this.map.getSource('media')._data;
     const cardData = this.state.selectedIds.map(id => {
-      return features.find(f => f.id == id).properties;
+      return features.find(f => f.id === id).properties;
     });
 
     return <CardDock removeCard={this.removeCard} cardData={cardData} />

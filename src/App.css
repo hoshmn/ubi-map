@@ -29,7 +29,8 @@ html, body, #root, .app {
     font-size: 12px;
 }
 
-.tooltip h6, .tooltip .location {
+.tooltip h6, 
+.tooltip .location {
     margin: 0;
     display: inline;
 }
@@ -40,40 +41,37 @@ table.card-dock {
     table-layout: fixed;
     position: fixed;
     /* top of dock should sit 250px from bottom */
-    top: calc(100vh - 120px); 
+    top: calc(100vh - 200px); 
     left: 0;
     right: 0;
     margin: 0 auto;
     width: 500px;
     background: #f2f2f2;
     cursor: default;
+    border-top: #c0c0c0 solid 7px;
+    border-radius: 4px;
 }
 
-th {
+thead td {
     background: white;
     font-size: 13px;
     position: relative;
-    border-top: #c0c0c0 solid 7px;
+    font-weight: bold;
 }
 
-th .remove {
+thead td .remove {
     position: absolute;
     font-size: 8px;
     top: -5px;
     right: 3px;
     color: grey;
+    background: white;
     font-weight: lighter;
     cursor: pointer;
 }
 
-th, td {
-    /* max-width: 200px; */
-}
-
-.card-dock .property-row {
-    /* display: flex; */
-}
-.card-dock .property-name, .tooltip .location {
+.card-dock .property-name,
+.tooltip .location {
     font-weight: bold;
     font-size: 10px;
     text-transform: uppercase;
@@ -81,13 +79,14 @@ th, td {
     display: inline;
 }
 
-.property-value, .tooltip .detail {
+.property-value,
+.tooltip .detail {
     font-size: 12px;
+    margin: 0;
 }
 
 .property-cell {
     vertical-align: top;
-    /* max-width: 200px; */
 }
 
 tr:nth-child(odd) {background-color: #f7f7f7;} 
