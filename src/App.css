@@ -1,7 +1,8 @@
-body { margin:0; padding:0; min-height: 500px; }
+/* body { margin:0; padding:0; min-height: 500px; } */
 
 * {
   margin: 0;
+  padding: 0;
   word-wrap: break-word;
 }
 
@@ -10,7 +11,12 @@ html, body, #root, .app {
 }
 
 /* MAP */
-.map-container { position:absolute; top:0; bottom:0; width:100%; }
+.map-container {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
 
 /* TOOLTIP */
 .tooltip {
@@ -50,8 +56,8 @@ table.card-dock {
   z-index: 5;
   table-layout: fixed;
   position: fixed;
-  /* top of dock should sit 200px from bottom */
-  top: calc(100vh - 200px); 
+  /* top of dock should sit _px above window bottom */
+  top: calc(100vh - 150px); 
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -62,10 +68,16 @@ table.card-dock {
   cursor: default;
   border-top: #c0c0c0 solid 7px;
   border-radius: 4px;
+  transition: top 0.6s ease;
 }
 
-table.card-dock.expanded {
-  top: calc(80vh - 250px);
+table.card-dock.maximized {
+  top: calc(75vh - 300px);
+  position: absolute;
+}
+
+tbody td {
+  /* height: 30px; */
 }
 
 thead td {
@@ -87,6 +99,7 @@ thead td .remove {
   cursor: pointer;
 }
 
+/* TODO: mixin? (dry) */
 .card-dock .property-name,
 .tooltip .location {
   font-weight: lighter;
@@ -94,6 +107,10 @@ thead td .remove {
   text-transform: uppercase;
   /* color: grey; */
   /* display: inline; */
+}
+.property-cell.expandible .property-name {
+  /* make room for expand-icon */
+  padding-right: 8px;
 }
 
 .property-value,
@@ -103,9 +120,27 @@ thead td .remove {
   /* margin: 0; */
 }
 
+.property-value {
+  max-height: 26px;
+  overflow: hidden;
+  /* transition: max-height ease 0.8s; */
+}
+.property-value.expanded {
+  max-height: unset;
+}
+
+.property-cell .expand-icon {
+  position: absolute;
+  display: inline;
+  right: 8px;
+  top: 4px;
+  font-size: 13px;
+}
+
 .property-cell {
   vertical-align: top;
   padding: 8px;
+  position: relative;
 }
 
 tr:nth-child(odd) {background-color: #f7f7f7;} 

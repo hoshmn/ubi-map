@@ -1,13 +1,13 @@
-import React from 'react';
 import CardDock from './CardDock';
+import React from 'react';
 import Tooltip from './Tooltip';
-import './App.css';
 import mapboxgl from 'mapbox-gl';
 import styleData from './style.json';
+import './App.css';
 
 const SHEET_URL = 'https://spreadsheets.google.com/feeds/list/1gyAdUp3tekxAtz8fibILM-zHyX5CXh5OuY0Xbjxhijw/1/public/full?alt=json';
 mapboxgl.accessToken = 'pk.eyJ1IjoiZXZpY3Rpb24tbGFiIiwiYSI6ImNqY20zamVpcTBwb3gzM28yb292YzM3dXoifQ.uKgAjsMd4qkJNqEtr3XyPQ';
-const MAX_SELECTED_POINTS = 5;
+const MAX_SELECTED_POINTS = 3;
 
 class App extends React.Component {
   constructor(props) {
