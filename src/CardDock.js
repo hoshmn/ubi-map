@@ -32,7 +32,9 @@ const EXPANDIBLE_LIST = [
     'Links to Related Resources'
 ];
 
-// TODO: make more robust
+// pure component? (shallow compare map features?) (perf)
+
+// TODO: make more robust (stab)
 const convertProperty = property => {
     return property.split('').map(ltr => {
         if (ltr === ' ') {
@@ -43,28 +45,36 @@ const convertProperty = property => {
     }).join('');
 }
 
-class CardDock extends React.Component {
+class CardDock extends React.PureComponent {
   constructor(props) {
     super(props);
 
     this.state = { minimized: true, expandedProperties: {} };
-  }
-  
-  render() {
-    const cards = this.props.cardData.map(c => <div>{JSON.stringify(c)}</div>);
 
-    const names = this.props.cardData.map(card => (
-        <th className="name">{card.name||'(none)'}</th>
+    this.removeCard = this.removeCard.bind(this);
+  }
+
+  removeCard(id) {
+      this.props.removeCard(id);
+    }
+    
+    render() {
+    // TODO: don't bind in render (perf)
+        const names = this.props.cardData.map(card => (
+            <th key={card.expid+'-th'} className="name">
+                {card.name||'(none)'}
+                <p onClick={this.removeCard.bind(this, card.expid)} className="remove">X</p>
+            </th>
     ));
 
     const propertyRows = PROPERTY_LIST.map(property => {
         const propertyCells = this.props.cardData.map(card => (
-            <td className="property-cell">
+            <td className="property-cell" key={card.expid+'-td-'+property}>
                 <p className="property-name">{property}</p>
                 <p className="property-value">{card[convertProperty(property)]||'(none)'}</p>
             </td>
         ));
-        return <tr className="property-row">{propertyCells}</tr>;
+        return <tr className="property-row" key={property}>{propertyCells}</tr>;
     });
 
     return (

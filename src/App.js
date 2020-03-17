@@ -22,6 +22,7 @@ class App extends React.Component {
 
     this.map = null;
     this.getCardDock = this.getCardDock.bind(this);
+    this.removeCard = this.removeCard.bind(this);
   }
   
   componentDidMount() {
@@ -48,7 +49,7 @@ class App extends React.Component {
   }
 
   featuresOnClick(e) {
-    const {id } = e.features[0];
+    const { id } = e.features[0];
     const selectedIds = [...this.state.selectedIds];
     const idx = selectedIds.indexOf(id);
     const alreadySelected = idx > -1;
@@ -65,9 +66,7 @@ class App extends React.Component {
       selectedIds.splice(idx, 1);
     }
 
-    this.setState({ 
-      selectedIds: selectedIds
-    });
+    this.setState({ selectedIds });
     this.map.setFeatureState({
         source: 'media',
         id
@@ -99,19 +98,29 @@ class App extends React.Component {
     this.setState({ hovered: {} });
   }
 
-  getCardDock() {
-    console.log(this.state.selectedIds);
+  removeCard(id) {
+    const selectedIds = [...this.state.selectedIds];
+    const idx = selectedIds.indexOf(id);
+    selectedIds.splice(idx, 1);
 
+    this.setState({ selectedIds });
+    this.map.setFeatureState({
+        source: 'media',
+        id
+      }, { selected: false }
+    );
+  }
+
+  getCardDock() {
     if (!this.map || !this.state.selectedIds.length) {
       return null;
     }
     const { features } = this.map.getSource('media')._data;
     const cardData = this.state.selectedIds.map(id => {
-      return features.find(f => Number(f.id) === id).properties;
+      return features.find(f => f.id == id).properties;
     });
 
-    console.log(cardData);
-    return <CardDock cardData={cardData} />
+    return <CardDock removeCard={this.removeCard} cardData={cardData} />
   }
   
   render() {
@@ -150,7 +159,8 @@ function load () {
       var row = {};
       properties.forEach(function (p) {
         row[p] = r["gsx$" + p].$t === "" ? null : r["gsx$" + p].$t;
-        if (['latitude', 'longitude'].indexOf(p) !== -1) {
+        // mapbox wants numeric lat/long, and coerces id to num (so avoid type error headache)
+        if (['latitude', 'longitude', 'expid', 'uid'].indexOf(p) !== -1) {
           row[p] = +row[p];
         }
         if (row[p] === null) {
@@ -159,7 +169,7 @@ function load () {
       });
       return {
         type: 'Feature',
-        id: row.idd,
+        id: row.expid,
         geometry: {
           type: 'Point',
           coordinates: [row.longitude, row.latitude]
