@@ -125,7 +125,7 @@ class App extends React.Component {
   
   render() {
     return (
-      <div className="app">
+      <div className='app'>
         {this.getCardDock()}
         <div ref={el => this.mapContainer = el} className='map-container' />
         <Tooltip {...this.state.hovered} />
@@ -151,14 +151,14 @@ function load () {
     var rows = JSON.parse(req.responseText).feed.entry;
     var properties = Object.keys(rows[0])
       .filter(function (p) { 
-        return p.startsWith("gsx$") & !p.endsWith("_db1zf");
+        return p.startsWith('gsx$') & !p.endsWith('_db1zf');
       })
       .map(function (p) { return p.substr(4); });
     
     var items = rows.map(function (r, ri) {
       var row = {};
       properties.forEach(function (p) {
-        row[p] = r["gsx$" + p].$t === "" ? null : r["gsx$" + p].$t;
+        row[p] = r['gsx$' + p].$t === '' ? null : r['gsx$' + p].$t;
         // mapbox wants numeric lat/long, and coerces id to num (so avoid type error headache)
         if (['latitude', 'longitude', 'expid', 'uid'].indexOf(p) !== -1) {
           row[p] = +row[p];
@@ -184,8 +184,8 @@ function load () {
 
   // Fetch Local Article Data
   var mediaReq = new XMLHttpRequest();
-  mediaReq.addEventListener("load",  () => { reqHandler('media', mediaReq) });
-  mediaReq.open("GET", SHEET_URL);
+  mediaReq.addEventListener('load',  () => { reqHandler('media', mediaReq) });
+  mediaReq.open('GET', SHEET_URL);
   mediaReq.send();
 }
 
