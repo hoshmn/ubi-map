@@ -76,7 +76,7 @@ class App extends React.Component {
 
   featuresOnHover(e) {
     this.map.getCanvas().style.cursor = 'pointer';
-    const { geometry, id, properties } = e.features[0];
+    const { id, properties } = e.features[0];
     const { name, location } = properties;
     const { x, y } = e.point;
     this.setState({ hovered: { id, name, location, x, y } });

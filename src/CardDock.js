@@ -63,7 +63,7 @@ class CardDock extends React.PureComponent {
     const names = this.props.cardData.map(card => (
         <td key={card.expid+'-name'} className="name">
             {card.name||'(none)'}
-            <p onClick={this.removeCard.bind(this, card.expid)} className="remove">X</p>
+            <p onClick={this.removeCard.bind(this, card.expid)} className="remove">✕</p>
         </td>
     ));
 

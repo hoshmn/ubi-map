@@ -1,5 +1,10 @@
 body { margin:0; padding:0; min-height: 500px; }
 
+* {
+    margin: 0;
+    word-wrap: break-word;
+}
+
 html, body, #root, .app {
     height: 100%;
 }
@@ -16,7 +21,7 @@ html, body, #root, .app {
     position: fixed;
     padding: 4px;
     max-width: 175px;
-    margin: 0;
+    /* margin: 0; */
 }
 
 .tooltip .detail {
@@ -29,9 +34,14 @@ html, body, #root, .app {
     font-size: 12px;
 }
 
-.tooltip h6, 
+.tooltip .click-hint {
+    font-size: 8px;
+    /* font-weight: bold; */
+    padding-top: 5px;
+    text-align: center;
+}
+
 .tooltip .location {
-    margin: 0;
     display: inline;
 }
 
@@ -40,12 +50,14 @@ table.card-dock {
     z-index: 5;
     table-layout: fixed;
     position: fixed;
-    /* top of dock should sit 250px from bottom */
+    /* top of dock should sit 200px from bottom */
     top: calc(100vh - 200px); 
     left: 0;
     right: 0;
     margin: 0 auto;
-    width: 500px;
+    width: 80%;
+    min-width: 200px;
+    /* max-width: 600px; */
     background: #f2f2f2;
     cursor: default;
     border-top: #c0c0c0 solid 7px;
@@ -55,38 +67,41 @@ table.card-dock {
 thead td {
     background: white;
     font-size: 13px;
+    padding: 12px 12px 8px 8px;
+    word-wrap: break-word;
     position: relative;
     font-weight: bold;
 }
 
 thead td .remove {
     position: absolute;
-    font-size: 8px;
-    top: -5px;
-    right: 3px;
+    font-size: 10px;
+    top: 2px;
+    right: 4px;
     color: grey;
-    background: white;
     font-weight: lighter;
     cursor: pointer;
 }
 
 .card-dock .property-name,
 .tooltip .location {
-    font-weight: bold;
-    font-size: 10px;
+    font-weight: lighter;
+    font-size: 9px;
     text-transform: uppercase;
-    color: grey;
-    display: inline;
+    /* color: grey; */
+    /* display: inline; */
 }
 
 .property-value,
 .tooltip .detail {
     font-size: 12px;
-    margin: 0;
+    padding-top: 5px;
+    /* margin: 0; */
 }
 
 .property-cell {
     vertical-align: top;
+    padding: 8px;
 }
 
 tr:nth-child(odd) {background-color: #f7f7f7;} 

@@ -1,10 +1,6 @@
 import React from 'react';
 
 class Tooltip extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  
   render() {
     const { id, name, location, x, y } = this.props;
     if (!id) return null;
@@ -16,7 +12,7 @@ class Tooltip extends React.Component {
               <p className='location'>Location:</p>
               {location}
             </div>
-            <h6>click point for more info</h6>
+            <p className='click-hint'>click point for more info</p>
         </div>
     )
   }
