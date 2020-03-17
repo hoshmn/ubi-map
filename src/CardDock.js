@@ -52,11 +52,21 @@ class CardDock extends React.PureComponent {
     this.state = { minimized: true, expandedProperties: {} };
 
     this.removeCard = this.removeCard.bind(this);
-    this.expandDock = this.expandDock.bind(this);
+    this.toggleDock = this.toggleDock.bind(this);
+  }
+
+  componentDidMount() {
+    console.log('hihi');
+    // document.querySelector('table')
+    // .addEventListener('scroll', this.toggleDock);
   }
 
   removeCard(id) {
     this.props.removeCard(id);
+  }
+
+  toggleDock() {
+    this.setState(state => ({ minimized: !state.minimized }));
   }
     
   render() {
@@ -78,20 +88,22 @@ class CardDock extends React.PureComponent {
       return <tr className='property-row' key={property}>{propertyCells}</tr>;
     });
 
-    const classes = 'card-dock';
+    let classes = 'card-dock';
     if (!this.state.minimized) {
       classes += ' expanded';
     }
 
     return (
-      <table onScroll={this.expandDock} className={classes}>
-        <thead>
-          <tr>{names}</tr>
-        </thead>
-        <tbody>
-          {propertyRows}
-        </tbody>
-      </table>
+      <div onDoubleClick={this.toggleDock}>
+        <table className={classes}>
+          <thead>
+            <tr>{names}</tr>
+          </thead>
+          <tbody>
+            {propertyRows}
+          </tbody>
+        </table>
+      </div>
     )
   }
 }

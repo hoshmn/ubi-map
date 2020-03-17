@@ -65,7 +65,7 @@ table.card-dock {
 }
 
 table.card-dock.expanded {
-  top: 40vh;
+  top: calc(80vh - 250px);
 }
 
 thead td {
