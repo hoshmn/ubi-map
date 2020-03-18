@@ -42,9 +42,9 @@ class App extends React.Component {
       });
     });
 
-    this.map.on('click', 'clusters', this.featuresOnClick.bind(this));
-    this.map.on('mouseenter', 'clusters', this.featuresOnHover.bind(this));
-    this.map.on('mouseleave', 'clusters', this.featuresOnUnhover.bind(this));
+    this.map.on('click', 'experimentSites', this.featuresOnClick.bind(this));
+    this.map.on('mouseenter', 'experimentSites', this.featuresOnHover.bind(this));
+    this.map.on('mouseleave', 'experimentSites', this.featuresOnUnhover.bind(this));
 
     load.call(this); 
   }
@@ -69,7 +69,7 @@ class App extends React.Component {
 
     this.setState({ selectedIds });
     this.map.setFeatureState({
-        source: 'media',
+        source: 'experiments',
         id
       }, { selected: !alreadySelected }
     );
@@ -82,7 +82,7 @@ class App extends React.Component {
     const { x, y } = e.point;
     this.setState({ hovered: { id, name, location, x, y } });
     this.map.setFeatureState({
-        source: 'media',
+        source: 'experiments',
         id
       }, { hover: true }
     );
@@ -91,7 +91,7 @@ class App extends React.Component {
   featuresOnUnhover() {
     this.map.getCanvas().style.cursor = '';
     this.map.setFeatureState({
-        source: 'media',
+        source: 'experiments',
         id: this.state.hovered.id
       }, { hover: false }
     );
@@ -106,7 +106,7 @@ class App extends React.Component {
 
     this.setState({ selectedIds });
     this.map.setFeatureState({
-        source: 'media',
+        source: 'experiments',
         id
       }, { selected: false }
     );
@@ -116,7 +116,7 @@ class App extends React.Component {
     if (!this.map || !this.state.selectedIds.length) {
       return null;
     }
-    const { features } = this.map.getSource('media')._data;
+    const { features } = this.map.getSource('experiments')._data;
     const cardData = this.state.selectedIds.map(id => {
       return features.find(f => f.id === id).properties;
     });
@@ -147,7 +147,7 @@ function load () {
     });
   }
 
-  var mediaData = { type: 'FeatureCollection', features: [] };
+  var experimentsData = { type: 'FeatureCollection', features: [] };
 
   const reqHandler = (source, req) => {
     var rows = JSON.parse(req.responseText).feed.entry;
@@ -180,15 +180,15 @@ function load () {
       };
     });
 
-    mediaData = { type: 'FeatureCollection', features: items };
-    this.map.getSource('media').setData(mediaData);
+    experimentsData = { type: 'FeatureCollection', features: items };
+    this.map.getSource('experiments').setData(experimentsData);
   }
 
   // Fetch Local Article Data
-  var mediaReq = new XMLHttpRequest();
-  mediaReq.addEventListener('load',  () => { reqHandler('media', mediaReq) });
-  mediaReq.open('GET', SHEET_URL);
-  mediaReq.send();
+  var experimentsReq = new XMLHttpRequest();
+  experimentsReq.addEventListener('load',  () => { reqHandler('experiments', experimentsReq) });
+  experimentsReq.open('GET', SHEET_URL);
+  experimentsReq.send();
 }
 
 export default App;

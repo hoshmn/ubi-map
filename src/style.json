@@ -1,7 +1,7 @@
 {
   "version": 8,
-  "id": "eviction-lab-media",
-  "name": "Eviction Lab Media Map",
+  "id": "ubi-experiments",
+  "name": "UBI Experiment Map",
   "sprite": "https://tiles.evictionlab.org/sprites",
   "sources": {
     "composite": {
@@ -24,7 +24,7 @@
       ],
       "attribution": ""
     },
-    "media": {
+    "experiments": {
         "type": "geojson",
         "data": {
             "type" : "FeatureCollection",
@@ -199,9 +199,9 @@
       }
     },
     {
-        "id": "clusters",
+        "id": "experimentSites",
         "type": "circle",
-        "source": "media",
+        "source": "experiments",
         "paint": {
           "circle-color": [
             "case",
@@ -225,7 +225,7 @@
     {
         "id": "cluster_count",
         "type": "symbol",
-        "source": "media",
+        "source": "experiments",
         "filter": ["has", "point_count"],
         "layout": {
             "text-field": "{point_count_abbreviated}",
