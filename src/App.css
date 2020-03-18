@@ -4,6 +4,9 @@
   margin: 0;
   padding: 0;
   word-wrap: break-word;
+  /* TODO: should we? (UI) */
+  user-select: none;
+  cursor: default;
 }
 
 html, body, #root, .app {
@@ -58,7 +61,7 @@ html, body, #root, .app {
   right: 3px;
   top: 3px;
   cursor: pointer;
-  user-select: none;
+  /* user-select: none; */
   font-family: monospace !important;
   color: gray; 
 }
@@ -118,7 +121,7 @@ table.card-dock {
   min-width: 200px;
   /* max-width: 600px; */
   background: #f2f2f2;
-  cursor: default;
+  /* cursor: default; */
   border-top: #c0c0c0 solid 7px;
   border-radius: 4px;
   transition: top 0.6s ease;
@@ -151,7 +154,7 @@ thead td .remove {
   color: grey;
   font-weight: lighter;
   cursor: pointer;
-  user-select: none;
+  /* user-select: none; */
 }
 
 /* TODO: mixin? (dry) */
@@ -192,7 +195,7 @@ thead td .remove {
   top: 4px;
   font-size: 13px;
   cursor: pointer;
-  user-select: none;
+  /* user-select: none; */
 }
 
 .property-cell {
