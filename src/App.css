@@ -23,7 +23,7 @@ html, body, #root, .app {
   position: fixed;
   top: 8px;
   right: 8px;
-  background: white;
+  background: #ffffffcc;
   padding: 8px;
   border-radius: 4px;
   font-weight: lighter;
@@ -31,7 +31,6 @@ html, body, #root, .app {
   text-transform: uppercase;
   box-shadow: rgba(0, 0, 0, 0.1) 3px 3px 5px;
 }
-
 .legend div {
   padding: 4px;
 }
@@ -43,17 +42,33 @@ html, body, #root, .app {
   border-radius: 5px;
   margin-right: 8px;
 }
-
 .legend i.past {
   background: rgb(0,80,92);
 }
-
 .legend i.ongoing {
   background: rgb(223,70,73);
 }
-
 .legend i.proposed {
   background: rgb(175,105,12);
+}
+
+.legend .expand-icon {
+  position: absolute;
+  display: inline;
+  right: 3px;
+  top: 3px;
+  cursor: pointer;
+  user-select: none;
+  font-family: monospace !important;
+  color: gray; 
+}
+
+.legend.hidden {
+  height: 5px;
+  width: 12px;
+}
+.legend.hidden .content {
+  display: none;
 }
 
 /* TOOLTIP */
@@ -136,6 +151,7 @@ thead td .remove {
   color: grey;
   font-weight: lighter;
   cursor: pointer;
+  user-select: none;
 }
 
 /* TODO: mixin? (dry) */
@@ -168,12 +184,15 @@ thead td .remove {
   max-height: unset;
 }
 
+/* TODO: mixin? (dry) */
 .property-cell .expand-icon {
   position: absolute;
   display: inline;
   right: 8px;
   top: 4px;
   font-size: 13px;
+  cursor: pointer;
+  user-select: none;
 }
 
 .property-cell {
