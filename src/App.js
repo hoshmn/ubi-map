@@ -6,8 +6,7 @@ import mapboxgl from 'mapbox-gl';
 import styleData from './style.json';
 import './App.css';
 
-const SHEET_URL = 'https://spreadsheets.google.com/feeds/list/1gyAdUp3tekxAtz8fibILM-zHyX5CXh5OuY0Xbjxhijw/1/public/full?alt=json';
-mapboxgl.accessToken = 'pk.eyJ1IjoiZXZpY3Rpb24tbGFiIiwiYSI6ImNqY20zamVpcTBwb3gzM28yb292YzM3dXoifQ.uKgAjsMd4qkJNqEtr3XyPQ';
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 const MAX_SELECTED_POINTS = 3;
 
 class App extends React.Component {
@@ -187,7 +186,7 @@ function load () {
   // Fetch Local Article Data
   var experimentsReq = new XMLHttpRequest();
   experimentsReq.addEventListener('load',  () => { reqHandler('experiments', experimentsReq) });
-  experimentsReq.open('GET', SHEET_URL);
+  experimentsReq.open('GET', process.env.REACT_APP_SHEET_URL);
   experimentsReq.send();
 }
 
