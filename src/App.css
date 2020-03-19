@@ -124,13 +124,13 @@ table.card-dock {
   border-top: #c0c0c0 solid 7px;
   border-radius: 4px;
   box-shadow: rgba(0, 0, 0, 0.1) 2px 2px 4px;
-  transition: top 0.6s ease;
 }
 
 table.card-dock.maximized {
-  top: calc(75vh - 300px);
+  top: calc(100vh - 150px);
   /* allows scrolling of cards */
   position: absolute;
+  transition: top 0.6s ease;
 }
 
 thead td {
