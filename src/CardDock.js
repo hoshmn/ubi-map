@@ -126,6 +126,8 @@ class CardDock extends React.PureComponent {
     
   render() {
     let classes = 'card-dock';
+    const cardCount = String(this.props.cardData.length);
+    classes += ` card-count-${cardCount}`;
     if (!this.state.minimized) {
       classes += ' maximized';
     }

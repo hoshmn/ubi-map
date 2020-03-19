@@ -126,11 +126,25 @@ table.card-dock {
   box-shadow: rgba(0, 0, 0, 0.1) 2px 2px 4px;
 }
 
+table.card-dock.card-count-1 {
+  max-width: 320px;
+}
+table.card-dock.card-count-2 {
+  max-width: 640px;
+}
+table.card-dock.card-count-3 {
+  max-width: 960px;
+}
+
 table.card-dock.maximized {
   top: calc(100vh - 150px);
   /* allows scrolling of cards */
   position: absolute;
   transition: top 0.6s ease;
+}
+
+td {
+  max-width: 200px;
 }
 
 thead td {
