@@ -16,8 +16,8 @@ class Tooltip extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { id } = nextProps;
-    if (this.props.id === id || !id) {
+    const { expId } = nextProps;
+    if (this.props.expId === expId || !expId) {
       // if we're still hovering the same point, don't worry about updating
       return;
     }
@@ -32,7 +32,7 @@ class Tooltip extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.state.adjusted || !this.props.id) {
+    if (this.state.adjusted || !this.props.expId) {
       // 6] location has already been adjusted, so don't trigger a rerender
       return;
     }
@@ -65,7 +65,7 @@ class Tooltip extends React.Component {
       left -= (tooltipWidth + POINT_BUFFER*2);
 
       if (left < 0) {
-        // ...unless it would then run off the left, in which case set it as far right as possible
+        // ...unless it would then run off the left, in which case set it up against the right border
         left = windowWidth - (tooltipWidth + 2);
       }
     }
@@ -75,8 +75,8 @@ class Tooltip extends React.Component {
   }
   
   render() {
-    const { id, name, location } = this.props;
-    if (!id) {
+    const { expId, name, location, otherLocations } = this.props;
+    if (!expId) {
       return null;
     }
 
@@ -89,12 +89,14 @@ class Tooltip extends React.Component {
       style = { left: this.state.left + 'px', top: this.state.top + 'px' };
     }
 
+    console.log(this.props.location, this.props.otherLocations);
     return (
       <div className='tooltip' style={style} ref={this.ref}>
         <div className='name'>{name||'(none)'}</div>
         <div className='detail'>
           <p className='location'>Location:</p>
-          {location}
+          <p>{location}</p>
+          <p>{otherLocations}</p>
         </div>
         <p className='click-hint'>click point for more info</p>
       </div>

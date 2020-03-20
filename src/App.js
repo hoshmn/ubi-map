@@ -3,6 +3,7 @@ import Legend from './Legend';
 import React from 'react';
 import Tooltip from './Tooltip';
 import mapboxgl from 'mapbox-gl';
+import _ from 'lodash';
 import styleData from './style.json';
 import './App.css';
 
@@ -22,9 +23,11 @@ class App extends React.Component {
 
     this.map = null;
     this.getCardDock = this.getCardDock.bind(this);
+    this.getTooltip = this.getTooltip.bind(this);
     this.removeCard = this.removeCard.bind(this);
+    this.getFeaturesByExperimentId = this.getFeaturesByExperimentId.bind(this);
   }
-  
+
   componentDidMount() {
     this.map = new mapboxgl.Map({
       container: this.mapContainer,
@@ -34,24 +37,30 @@ class App extends React.Component {
     });
     
     this.map.on('move', () => {
+      this.featuresOnUnhover();
       this.setState({
         lng: this.map.getCenter().lng.toFixed(4),
         lat: this.map.getCenter().lat.toFixed(4),
         zoom: this.map.getZoom().toFixed(2)
       });
     });
-
+    
     this.map.on('click', 'experimentSites', this.featuresOnClick.bind(this));
     this.map.on('mouseenter', 'experimentSites', this.featuresOnHover.bind(this));
     this.map.on('mouseleave', 'experimentSites', this.featuresOnUnhover.bind(this));
-
+    
     load.call(this); 
   }
-
+  
+  getFeaturesByExperimentId(expId) {
+    const { features } = this.map.getSource('experiments')._data;
+    return features.filter(f => f.id === expId).map(f => f.properties);
+  }
+  
   featuresOnClick(e) {
-    const { id } = e.features[0];
+    const { id: expId } = e.features[0];
     const selectedIds = [...this.state.selectedIds];
-    const idx = selectedIds.indexOf(id);
+    const idx = selectedIds.indexOf(expId);
     const alreadySelected = idx > -1;
 
     if (!alreadySelected) {
@@ -60,7 +69,7 @@ class App extends React.Component {
         // warn user
         return;
       } else {
-        selectedIds.push(id);
+        selectedIds.push(expId);
       }
     } else {
       selectedIds.splice(idx, 1);
@@ -69,46 +78,61 @@ class App extends React.Component {
     this.setState({ selectedIds });
     this.map.setFeatureState({
         source: 'experiments',
-        id
+        id: expId
       }, { selected: !alreadySelected }
     );
   }
 
   featuresOnHover(e) {
     this.map.getCanvas().style.cursor = 'pointer';
-    const { id, properties } = e.features[0];
+    const { id: expId, properties } = e.features[0];    
     const { name, location } = properties;
     const { x, y } = e.point;
-    this.setState({ hovered: { id, name, location, x, y } });
+
+    this.setState({ hovered: { expId, name, location, x, y } });
     this.map.setFeatureState({
         source: 'experiments',
-        id
+        id: expId
       }, { hover: true }
     );
   }
 
   featuresOnUnhover() {
+    if (!this.state.hovered.expId) {
+      return;
+    }
     this.map.getCanvas().style.cursor = '';
     this.map.setFeatureState({
         source: 'experiments',
-        id: this.state.hovered.id
+        id: this.state.hovered.expId
       }, { hover: false }
     );
 
     this.setState({ hovered: {} });
   }
 
-  removeCard(id) {
+  removeCard(expId) {
     const selectedIds = [...this.state.selectedIds];
-    const idx = selectedIds.indexOf(id);
+    const idx = selectedIds.indexOf(expId);
     selectedIds.splice(idx, 1);
 
     this.setState({ selectedIds });
     this.map.setFeatureState({
         source: 'experiments',
-        id
+        id: expId
       }, { selected: false }
     );
+  }
+
+  getTooltip() {
+    const { expId, name, location, x, y } = this.state.hovered;
+    let otherLocations = [];
+    if (expId) {
+      const features = this.getFeaturesByExperimentId(expId);
+      const locations = features.map(f => f.location);
+      otherLocations = locations.filter(l => l !== location);
+    }
+    return <Tooltip expId={expId} name={name} location={location} otherLocations={otherLocations} x={x} y={y}/>;
   }
 
   getCardDock() {
@@ -116,8 +140,8 @@ class App extends React.Component {
       return null;
     }
     const { features } = this.map.getSource('experiments')._data;
-    const cardData = this.state.selectedIds.map(id => {
-      return features.find(f => f.id === id).properties;
+    const cardData = this.state.selectedIds.map(expId => {
+      return features.find(f => f.expId === expId).properties;
     });
 
     return <CardDock removeCard={this.removeCard} cardData={cardData} />
@@ -127,8 +151,8 @@ class App extends React.Component {
     return (
       <div className='app'>
         {this.getCardDock()}
+        {this.getTooltip()}
         <div ref={el => this.mapContainer = el} className='map-container' />
-        <Tooltip {...this.state.hovered} />
         <Legend />
       </div>
     )
