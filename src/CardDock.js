@@ -1,5 +1,5 @@
 import React from 'react';
-// import { useTransition, animated } from 'react-spring'
+import _ from 'lodash';
 
 const PROPERTY_LIST = [
   'Implementation Dates',
@@ -30,9 +30,10 @@ const EXPANDIBLE_LIST = [
   'Links to Related Resources'
 ];
 
+const FORCE_UNIFORM_VALUE = [];
 
 // TODO: make more robust (stab)
-const convertProperty = property => {
+const convertToSpreadsheetFormat = property => {
   return property.split('').map(ltr => {
     if (ltr === ' ') {
       return '';
@@ -78,17 +79,18 @@ class CardDock extends React.PureComponent {
 
   getNames() {
     // TODO: don't bind in render (perf)
-    return this.props.cardData.map(cards => (
-      <td key={'name'+cards[0].eid} className='name'>
-        {cards[0].name||'(none)'}
-        <p onClick={this.removeCard.bind(this, cards[0].eid)} className='remove'>✕</p>
+    return this.props.cardData.map(experimentCardSet => (
+      <td key={'name'+experimentCardSet[0].eid} className='name'>
+        {experimentCardSet[0].name||'(none)'}
+        <p onClick={this.removeCard.bind(this, experimentCardSet[0].eid)} className='remove'>✕</p>
       </td>
     ));
   }
 
   getRows() {
     return PROPERTY_LIST.map(property => {
-      const expandible = EXPANDIBLE_LIST.includes(property);
+      const expandible = this.getIsExpandible(property);
+      // const expandible = true;
       const expanded = !!this.state.expandedProperties[property];
 
       let expandIcon = null;
@@ -104,7 +106,8 @@ class CardDock extends React.PureComponent {
         );
       }
 
-      let cellClass = 'property-cell';
+      // include property name as class for selective styling
+      let cellClass = 'property-cell ' + property;
       if (expandible) {
         cellClass += ' expandible';
       }
@@ -114,14 +117,49 @@ class CardDock extends React.PureComponent {
         valueClass += ' expanded';
       }
 
-      const propertyCells = this.props.cardData.map(cards => (
-        <td className={cellClass} key={property+'-td-'+cards[0].eid}>
-          <div className='property-name'>{property}{expandIcon}</div>
-          <p className={valueClass}>{cards[0][convertProperty(property)]||'(none)'}</p>
-        </td>
-      ));
+      const propertyCells = this.props.cardData.map(experimentCardSet => {
+        
+        const cellContent = this.getCellContent(experimentCardSet, property);
+        return (
+          <td className={cellClass} key={property+'-td-'+experimentCardSet[0].eid}>
+            <div className='property-name'>{property}{expandIcon}</div>
+            <div className={valueClass}>{cellContent}</div>
+          </td>
+      )});
       return <tr className='property-row' key={property}>{propertyCells}</tr>;
     });
+  }
+
+  getIsExpandible(property) {
+    if (property === 'Location') {
+      // if any experimint in the card dock has multiple locations, the cell should be expandible
+      return _.some(this.props.cardData, expCardSet => expCardSet.length > 1);
+    }
+    return EXPANDIBLE_LIST.includes(property);
+  }
+
+  getCellContent(experimentCardSet, property) {
+    const spreadsheetProperty = convertToSpreadsheetFormat(property);
+
+    const [locationOneData, ...otherLocationsData] = experimentCardSet;
+    const firstValue = locationOneData[spreadsheetProperty];
+    const uniformValue = _.every(otherLocationsData, l => l[spreadsheetProperty] === firstValue);
+    
+    let cellContent;
+    if (uniformValue) {
+      cellContent = firstValue;
+    } else {
+      cellContent = experimentCardSet.map(locationData => {
+        return (
+          <div key={`cell-content-${spreadsheetProperty}-${locationData.eid}-${locationData.location}`}>
+            {property !== 'Location' && <div className='property-location-title'>{locationData.location}</div>}
+            {locationData[spreadsheetProperty]}
+          </div>
+        )
+      })
+    }
+
+    return <>{cellContent}</>;
   }
     
   render() {

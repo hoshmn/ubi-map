@@ -169,6 +169,7 @@ thead td .remove {
 
 /* TODO: mixin? (dry) */
 .card-dock .property-name,
+.card-dock .property-location-title,
 .tooltip .location {
   font-weight: lighter;
   font-size: 9px;
