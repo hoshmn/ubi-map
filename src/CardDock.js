@@ -78,10 +78,10 @@ class CardDock extends React.PureComponent {
 
   getNames() {
     // TODO: don't bind in render (perf)
-    return this.props.cardData.map(card => (
-      <td key={'name'+card.expid} className='name'>
-        {card.name||'(none)'}
-        <p onClick={this.removeCard.bind(this, card.expid)} className='remove'>✕</p>
+    return this.props.cardData.map(cards => (
+      <td key={'name'+cards[0].expid} className='name'>
+        {cards[0].name||'(none)'}
+        <p onClick={this.removeCard.bind(this, cards[0].expid)} className='remove'>✕</p>
       </td>
     ));
   }
@@ -114,10 +114,10 @@ class CardDock extends React.PureComponent {
         valueClass += ' expanded';
       }
 
-      const propertyCells = this.props.cardData.map(card => (
-        <td className={cellClass} key={property+'-td-'+card.expid}>
+      const propertyCells = this.props.cardData.map(cards => (
+        <td className={cellClass} key={property+'-td-'+cards[0].expid}>
           <div className='property-name'>{property}{expandIcon}</div>
-          <p className={valueClass}>{card[convertProperty(property)]||'(none)'}</p>
+          <p className={valueClass}>{cards[0][convertProperty(property)]||'(none)'}</p>
         </td>
       ));
       return <tr className='property-row' key={property}>{propertyCells}</tr>;

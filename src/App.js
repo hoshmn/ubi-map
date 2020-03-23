@@ -129,8 +129,9 @@ class App extends React.Component {
     let otherLocations = [];
     if (expId) {
       const features = this.getFeaturesByExperimentId(expId);
-      const locations = features.map(f => f.location);
-      otherLocations = locations.filter(l => l !== location);
+      otherLocations = features
+        .map(f => f.location)
+        .filter(l => l !== location);
     }
     return <Tooltip expId={expId} name={name} location={location} otherLocations={otherLocations} x={x} y={y}/>;
   }
@@ -139,11 +140,8 @@ class App extends React.Component {
     if (!this.map || !this.state.selectedIds.length) {
       return null;
     }
-    const { features } = this.map.getSource('experiments')._data;
-    const cardData = this.state.selectedIds.map(expId => {
-      return features.find(f => f.expId === expId).properties;
-    });
 
+    const cardData = this.state.selectedIds.map(this.getFeaturesByExperimentId);
     return <CardDock removeCard={this.removeCard} cardData={cardData} />
   }
   
