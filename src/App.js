@@ -183,7 +183,7 @@ function load () {
       properties.forEach(function (p) {
         row[p] = r['gsx$' + p].$t === '' ? null : r['gsx$' + p].$t;
         // mapbox wants numeric lat/long, and coerces id to num (so avoid type error headache)
-        if (['latitude', 'longitude', 'expid', 'uid'].indexOf(p) !== -1) {
+        if (['latitude', 'longitude', 'eid', 'uid'].indexOf(p) !== -1) {
           row[p] = +row[p];
         }
         if (row[p] === null) {
@@ -192,7 +192,7 @@ function load () {
       });
       return {
         type: 'Feature',
-        id: row.expid,
+        id: row.eid,
         geometry: {
           type: 'Point',
           coordinates: [row.longitude, row.latitude]

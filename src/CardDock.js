@@ -79,9 +79,9 @@ class CardDock extends React.PureComponent {
   getNames() {
     // TODO: don't bind in render (perf)
     return this.props.cardData.map(cards => (
-      <td key={'name'+cards[0].expid} className='name'>
+      <td key={'name'+cards[0].eid} className='name'>
         {cards[0].name||'(none)'}
-        <p onClick={this.removeCard.bind(this, cards[0].expid)} className='remove'>✕</p>
+        <p onClick={this.removeCard.bind(this, cards[0].eid)} className='remove'>✕</p>
       </td>
     ));
   }
@@ -115,7 +115,7 @@ class CardDock extends React.PureComponent {
       }
 
       const propertyCells = this.props.cardData.map(cards => (
-        <td className={cellClass} key={property+'-td-'+cards[0].expid}>
+        <td className={cellClass} key={property+'-td-'+cards[0].eid}>
           <div className='property-name'>{property}{expandIcon}</div>
           <p className={valueClass}>{cards[0][convertProperty(property)]||'(none)'}</p>
         </td>
