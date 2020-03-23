@@ -210,16 +210,21 @@
             ["==", ["get", "type"], "ongoing"], "rgb(175,105,12)",
             "gray"
           ],
-          "circle-opacity": [
+          "circle-opacity": 0.8,
+          "circle-radius": [
             "case",
             ["boolean", ["feature-state", "selected"], false],
-            1,
+            8,
             ["boolean", ["feature-state", "hover"], false],
-            0.7,
-            0.4
+            7.5,
+            6
           ],
-            "circle-radius": 6,
-            "circle-stroke-width": 0
+          "circle-blur": [
+            "case",
+            ["boolean", ["feature-state", "hover"], false],
+            0.3,
+            0
+          ]
         }
     },
     {
