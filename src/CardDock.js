@@ -20,6 +20,7 @@ const PROPERTY_LIST = [
 
 const EXPANDIBLE_LIST = [
   'Location',
+  'Number of Recipients',
   'Implementing Agency',
   'Research Agency',
   'Funding Agency',
@@ -106,8 +107,7 @@ class CardDock extends React.PureComponent {
         );
       }
 
-      // include property name as class for selective styling
-      let cellClass = 'property-cell ' + property;
+      let cellClass = 'property-cell';
       if (expandible) {
         cellClass += ' expandible';
       }
@@ -139,6 +139,10 @@ class CardDock extends React.PureComponent {
   }
 
   getCellContent(experimentCardSet, property) {
+    if (property === 'Location') {
+      return this.getLocationCellContent(experimentCardSet);
+    }
+
     const spreadsheetProperty = convertToSpreadsheetFormat(property);
 
     const [locationOneData, ...otherLocationsData] = experimentCardSet;
@@ -149,16 +153,35 @@ class CardDock extends React.PureComponent {
     if (uniformValue) {
       cellContent = firstValue;
     } else {
+      // break cell into block for each location, as they have different values
       cellContent = experimentCardSet.map(locationData => {
         return (
           <div key={`cell-content-${spreadsheetProperty}-${locationData.eid}-${locationData.location}`}>
-            {property !== 'Location' && <div className='property-location-title'>{locationData.location}</div>}
+            <div 
+              title={locationData.location}
+              className='property-location-title'
+            >
+              {locationData.location}
+            </div>
             {locationData[spreadsheetProperty]}
           </div>
         )
       })
     }
 
+    return <>{cellContent}</>;
+  }
+
+  getLocationCellContent(experimentCardSet) {
+    const cellContent = experimentCardSet.map(locationData => (
+      <div 
+        title={locationData.location}
+        className='location-cell-content'
+        key={`cell-content-location-${locationData.eid}-${locationData.location}`}
+      >
+        {locationData.location}
+      </div>
+    ))
     return <>{cellContent}</>;
   }
     

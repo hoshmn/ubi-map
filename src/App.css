@@ -182,6 +182,13 @@ thead td .remove {
   padding-right: 8px;
 }
 
+.card-dock .location-cell-content,
+.card-dock .property-location-title {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 /* TODO: mixin? (dry) */
 .property-value,
 .tooltip .detail {
