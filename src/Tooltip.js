@@ -74,8 +74,26 @@ class Tooltip extends React.Component {
     this.setState({ left, top, adjusted: true });
   }
   
+  getLocations() {
+    const { location, otherLocations } = this.props;
+    let hoveredClass = 'hovered-location';
+    let otherLocationElements = null;
+
+    if (otherLocations.length) {
+      hoveredClass += ' emphasized';
+      otherLocationElements = otherLocations.map(l => <p key={l}>{l}</p>);
+    }
+
+    return (
+      <>
+        <p className={hoveredClass}>{location}</p>
+        {otherLocationElements}
+      </>
+    )
+  }
+
   render() {
-    const { expId, name, location, otherLocations } = this.props;
+    const { expId, name } = this.props;
     if (!expId) {
       return null;
     }
@@ -89,14 +107,12 @@ class Tooltip extends React.Component {
       style = { left: this.state.left + 'px', top: this.state.top + 'px' };
     }
 
-    console.log(this.props.location, this.props.otherLocations);
     return (
       <div className='tooltip' style={style} ref={this.ref}>
         <div className='name'>{name||'(none)'}</div>
         <div className='detail'>
-          <p className='location'>Location:</p>
-          <p>{location}</p>
-          <p>{otherLocations}</p>
+          <p className='location-title'>Location:</p>
+          {this.getLocations()}
         </div>
         <p className='click-hint'>click point for more info</p>
       </div>

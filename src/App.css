@@ -76,23 +76,27 @@ html, body, #root, .app, .map-container {
 .tooltip {
   z-index: 10;
   background: white;
-  border: black solid 1px;
+  /* border: black solid 1px; */
   /* overflows map with absolute */
   position: fixed;
-  padding: 4px;
-  max-width: 175px;
+  padding: 15px;
+  max-width: 210px;
   /* margin: 0; */
+  box-shadow: rgba(0, 0, 0, 0.1) 3px 3px 5px;
+  border-top: #c0c0c0 solid 7px;
+  border-radius: 4px;
 }
 
 .tooltip .detail {
   /* TODO: ? (UI) */
-  max-height: 70px;
-  overflow: hidden;
+  /* max-height: 70px;
+  overflow: hidden; */
 }
 
 .tooltip .name {
-  /* font-weight: bold; */
-  font-size: 12px;
+  font-weight: bold;
+  font-size: 14px;
+  /* padding: 8px; */
 }
 
 .tooltip .click-hint {
@@ -102,8 +106,13 @@ html, body, #root, .app, .map-container {
   text-align: center;
 }
 
-.tooltip .location {
-  display: inline;
+.tooltip .location-title {
+  /* display: inline; */
+  padding-top: 8px;
+}
+
+.tooltip .hovered-location.emphasized {
+  font-weight: bold;
 }
 
 /* CARD DOCK */
@@ -170,7 +179,7 @@ thead td .remove {
 /* TODO: mixin? (dry) */
 .card-dock .property-name,
 .card-dock .property-location-title,
-.tooltip .location {
+.tooltip .location-title {
   font-weight: lighter;
   font-size: 9px;
   text-transform: uppercase;
