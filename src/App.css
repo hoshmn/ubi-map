@@ -136,12 +136,15 @@ table.card-dock {
 }
 
 table.card-dock.card-count-1 {
+  min-width: 200px;
   max-width: 320px;
 }
 table.card-dock.card-count-2 {
+  min-width: 400px;
   max-width: 640px;
 }
 table.card-dock.card-count-3 {
+  min-width: 600px;
   max-width: 960px;
 }
 

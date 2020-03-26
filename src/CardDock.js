@@ -53,7 +53,8 @@ class CardDock extends React.PureComponent {
 
     this.removeCard = this.removeCard.bind(this);
     this.slideDock = this.slideDock.bind(this);
-    this.minimizeDock = this.minimizeDock.bind(this);
+    this.toggleDock = this.toggleDock.bind(this);
+    this.maximizeDock = this.maximizeDock.bind(this);
     this.toggleProperty = this.toggleProperty.bind(this);
   }
 
@@ -67,9 +68,14 @@ class CardDock extends React.PureComponent {
     }
   }
 
-  minimizeDock() {
+  toggleDock() {
     // TODO: call toggle? or remove, make only scroll-controlled
     this.setState(state => ({ minimized: !this.state.minimized }));
+  }
+
+  maximizeDock() {
+    // TODO: call toggle? or remove, make only scroll-controlled
+    this.setState(state => ({ minimized: false }));
   }
 
   toggleProperty(property, expanded) {
@@ -194,7 +200,11 @@ class CardDock extends React.PureComponent {
     }
 
     return (
-      <div onWheel={this.slideDock} onDoubleClick={this.minimizeDock}>
+      <div
+        onWheel={this.slideDock}
+        onDoubleClick={this.toggleDock}
+        onTouchStart={this.maximizeDock}
+      >
         <table className={classes}>
           <thead>
             <tr>{this.getNames()}</tr>

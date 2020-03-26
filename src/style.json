@@ -211,13 +211,25 @@
             "gray"
           ],
           "circle-opacity": 0.8,
-          "circle-radius": [
-            "case",
-            ["boolean", ["feature-state", "selected"], false],
-            8.5,
-            ["boolean", ["feature-state", "hover"], false],
-            7,
-            5
+          "circle-radius": ["interpolate",
+              ["exponential", 1.3],
+              ["zoom"],
+              1, ["*", 1, [
+                "case",
+                ["boolean", ["feature-state", "selected"], false],
+                8.5,
+                ["boolean", ["feature-state", "hover"], false],
+                7,
+                5
+              ]],
+              10, ["*", 8, [
+                "case",
+                ["boolean", ["feature-state", "selected"], false],
+                8.5,
+                ["boolean", ["feature-state", "hover"], false],
+                7,
+                5
+              ]]
           ],
           "circle-blur": [
             "case",

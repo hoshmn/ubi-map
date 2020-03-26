@@ -18,7 +18,8 @@ class App extends React.Component {
       lng: -103.59179687498357,
       zoom: 3,
       hovered: {},
-      selectedIds: []
+      selectedIds: [],
+      isTouchScreen: false
     };
 
     this.map = null;
@@ -48,10 +49,16 @@ class App extends React.Component {
     this.map.on('click', 'experimentSites', this.featuresOnClick.bind(this));
     this.map.on('mouseenter', 'experimentSites', this.featuresOnHover.bind(this));
     this.map.on('mouseleave', 'experimentSites', this.featuresOnUnhover.bind(this));
+
+    this.map.on('touchstart', 'experimentSites', this.touchstart.bind(this));
     
     load.call(this); 
   }
   
+  touchstart(e) {
+    this.setState({ isTouchScreen: true });
+  }
+
   getFeaturesByExperimentId(expId) {
     const { features } = this.map.getSource('experiments')._data;
     return features.filter(f => f.id === expId).map(f => f.properties);
@@ -84,6 +91,10 @@ class App extends React.Component {
   }
 
   featuresOnHover(e) {
+    if (this.state.isTouchScreen) {
+      // devices with touch screens shouldn't have tooltips
+      return;
+    }
     this.map.getCanvas().style.cursor = 'pointer';
     const { id: expId, properties } = e.features[0];    
     const { name, location } = properties;
@@ -98,7 +109,7 @@ class App extends React.Component {
   }
 
   featuresOnUnhover() {
-    if (!this.state.hovered.expId) {
+    if (this.state.isTouchScreen || !this.state.hovered.expId) {
       return;
     }
     this.map.getCanvas().style.cursor = '';
