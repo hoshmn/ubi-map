@@ -12,6 +12,11 @@ html, body, #root, .app, .map-container {
   width: 100%;
 }
 
+.app {
+  position: absolute;
+  overflow: scroll;
+}
+
 /* MAP */
 .map-container {
   position: fixed;
