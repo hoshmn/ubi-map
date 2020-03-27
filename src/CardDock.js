@@ -19,8 +19,6 @@ const PROPERTY_LIST = [
 ];
 
 const EXPANDIBLE_LIST = [
-  'Location',
-  'Number of Recipients',
   'Implementing Agency',
   'Research Agency',
   'Funding Agency',

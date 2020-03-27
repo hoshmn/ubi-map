@@ -224,12 +224,12 @@ thead td .remove-icon {
   font-size: 14px;
   padding-top: 5px;
   /* margin: 0; */
-  max-height: 30px;
+  /* max-height: 30px; */
   overflow: hidden;
   /* transition: max-height ease 0.8s; */
 }
-.property-value.expanded {
-  max-height: unset;
+.property-cell.expandible .property-value:not(.expanded) {
+  max-height: 30px;
 }
 
 /* TODO: mixin? (dry) */
@@ -279,11 +279,11 @@ tr:nth-child(even) {background-color: #ffffff;}
   }
 
   /* DOCK */
-  table.card-dock {
-    top: calc(100vh - 175px);
-  }
+  /* for smaller screens, don't "dock" */
+  table.card-dock,
   table.card-dock.maximized {
-    top: calc(100vh - 200px);
+    position: absolute;
+    top: calc(100vh - 175px);
   }
 
   thead td {
@@ -307,10 +307,9 @@ tr:nth-child(even) {background-color: #ffffff;}
 
   .property-value {
     font-size: 20px;
-    max-height: 40px;
   }
-  .property-value.expanded {
-    max-height: unset;
+  .property-cell.expandible .property-value:not(.expanded) {
+    max-height: 42px;
   }
 
   .property-cell .expand-icon {
