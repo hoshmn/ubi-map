@@ -13,6 +13,7 @@ html, body, #root, .app, .map-container {
 }
 
 .app {
+  /* necessary to prevent dock from overflowing page on mobile */
   position: absolute;
   overflow: scroll;
 }
@@ -96,6 +97,9 @@ html, body, #root, .app, .map-container {
   /* TODO: ? (UI) */
   /* max-height: 70px;
   overflow: hidden; */
+  font-size: 12px;
+  padding-top: 5px;
+  /* margin: 0; */
 }
 
 .tooltip .name {
@@ -112,8 +116,12 @@ html, body, #root, .app, .map-container {
 }
 
 .tooltip .location-title {
-  /* display: inline; */
   padding-top: 8px;
+  font-weight: lighter;
+  font-size: 9px;
+  text-transform: uppercase;
+  /* color: grey; */
+  /* display: inline; */
 }
 
 .tooltip .hovered-location.emphasized {
@@ -141,32 +149,34 @@ table.card-dock {
 }
 
 table.card-dock.card-count-1 {
-  min-width: 200px;
-  max-width: 320px;
+  min-width: 300px;
+  max-width: 325px;
 }
 table.card-dock.card-count-2 {
-  min-width: 400px;
-  max-width: 640px;
+  min-width: 600px;
+  max-width: 650px;
 }
 table.card-dock.card-count-3 {
-  min-width: 600px;
-  max-width: 960px;
+  min-width: 900px;
+  max-width: 975px;
 }
 
 table.card-dock.maximized {
-  top: calc(100vh - 150px);
+  top: calc(100vh - 100px);
   /* allows scrolling of cards */
   position: absolute;
   transition: top 0.6s ease;
 }
 
 td {
-  max-width: 200px;
+  /* max-width: 200px; */
 }
 
 thead td {
   background: white;
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 21px;
+  letter-spacing: 0.03em;
   padding: 12px 12px 8px 8px;
   word-wrap: break-word;
   position: relative;
@@ -186,10 +196,10 @@ thead td .remove {
 
 /* TODO: mixin? (dry) */
 .card-dock .property-name,
-.card-dock .property-location-title,
-.tooltip .location-title {
+.card-dock .property-location-title {
   font-weight: lighter;
-  font-size: 9px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   /* color: grey; */
   /* display: inline; */
@@ -207,15 +217,11 @@ thead td .remove {
 }
 
 /* TODO: mixin? (dry) */
-.property-value,
-.tooltip .detail {
-  font-size: 12px;
+.property-value {
+  font-size: 14px;
   padding-top: 5px;
   /* margin: 0; */
-}
-
-.property-value {
-  max-height: 26px;
+  max-height: 30px;
   overflow: hidden;
   /* transition: max-height ease 0.8s; */
 }
@@ -227,9 +233,9 @@ thead td .remove {
 .property-cell .expand-icon {
   position: absolute;
   display: inline;
-  right: 8px;
-  top: 4px;
-  font-size: 13px;
+  right: 4px;
+  top: 0px;
+  font-size: 20px;
   cursor: pointer;
   /* user-select: none; */
 }
@@ -244,7 +250,93 @@ thead td .remove {
 tr:nth-child(odd) {background-color: #f7f7f7;} 
 tr:nth-child(even) {background-color: #ffffff;} 
 
-@media (max-width: 768px) {
+@media (max-width: 650px) {
+  /* LEGEND */
+  .legend {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    padding: 0;
+    background: white;
+  }
+  .legend .content {
+    padding: 16px;
+    font-size: 18px;
+    letter-spacing: 0.1em;
+
+  }
+  .legend i {
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    margin-right: 14px;
+  }
+  .legend .expand-icon {
+    font-size: 20px;
+  }
+
+  /* DOCK */
+  table.card-dock {
+    top: calc(100vh - 180px);
+  }
+  table.card-dock.maximized {
+    top: calc(100vh - 180px);
+  }
+
+  thead td {
+    font-size: 20px;
+    line-height: 32px;
+    height: 80px;
+    padding-top: 20px;
+  }
+  
+  thead td .remove {
+    font-size: 32px;
+    font-weight: 100;
+    top: 6px;
+    right: 8px;
+  }
+
+  .card-dock .property-name,
+  .card-dock .property-location-title {
+    font-size: 20px;
+    letter-spacing: unset;
+  }
+
+  .property-value {
+    font-size: 20px;
+    max-height: 40px;
+  }
+  .property-value.expanded {
+    max-height: unset;
+  }
+
+  .property-cell .expand-icon {
+    right: 10px;
+    top: 10px;
+    font-size: 32px;
+  }
+
+  table.card-dock td {
+    padding: 22px;
+  }
+
+  table.card-dock.card-count-1 {
+    /* min-width: 325px; */
+    width: 100%;
+    max-width: unset;
+  }
+  table.card-dock.card-count-2 {
+    /* min-width: 650px; */
+    width: 150%;
+    max-width: unset;
+  }
+  table.card-dock.card-count-3 {
+    /* min-width: 975px; */
+    width: 200%;
+    max-width: unset;
+  }
 }
 @media (max-width: 991px) {
 }
