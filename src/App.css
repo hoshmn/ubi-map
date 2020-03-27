@@ -12,6 +12,12 @@ html, body, #root, .app, .map-container {
   width: 100%;
 }
 
+.remove-icon, .expand-icon {
+  /* TODO: chrome mobile doesn't recognize? */
+  text-transform: full-width;
+  font-weight: 100;
+}
+
 .app {
   /* necessary to prevent dock from overflowing page on mobile */
   position: absolute;
@@ -61,13 +67,10 @@ html, body, #root, .app, .map-container {
 
 .legend .expand-icon {
   position: absolute;
-  display: inline;
-  right: 3px;
-  top: 3px;
+  right: -3px;
+  top: 2px;
   cursor: pointer;
   /* user-select: none; */
-  font-family: monospace !important;
-  color: gray; 
 }
 
 .legend.hidden {
@@ -162,7 +165,7 @@ table.card-dock.card-count-3 {
 }
 
 table.card-dock.maximized {
-  top: calc(100vh - 100px);
+  top: calc(100vh - 125px);
   /* allows scrolling of cards */
   position: absolute;
   transition: top 0.6s ease;
@@ -183,13 +186,13 @@ thead td {
   font-weight: bold;
 }
 
-thead td .remove {
+thead td .remove-icon {
   position: absolute;
-  font-size: 10px;
+  font-size: 26px;
   top: 2px;
-  right: 4px;
-  color: grey;
-  font-weight: lighter;
+  right: 2px;
+  /* font-weight: 100; */
+  transform: rotate(45deg);
   cursor: pointer;
   /* user-select: none; */
 }
@@ -233,7 +236,7 @@ thead td .remove {
 .property-cell .expand-icon {
   position: absolute;
   display: inline;
-  right: 4px;
+  right: 2px;
   top: 0px;
   font-size: 20px;
   cursor: pointer;
@@ -264,7 +267,6 @@ tr:nth-child(even) {background-color: #ffffff;}
     padding: 16px;
     font-size: 18px;
     letter-spacing: 0.1em;
-
   }
   .legend i {
     width: 14px;
@@ -278,10 +280,10 @@ tr:nth-child(even) {background-color: #ffffff;}
 
   /* DOCK */
   table.card-dock {
-    top: calc(100vh - 180px);
+    top: calc(100vh - 175px);
   }
   table.card-dock.maximized {
-    top: calc(100vh - 180px);
+    top: calc(100vh - 200px);
   }
 
   thead td {
@@ -291,9 +293,8 @@ tr:nth-child(even) {background-color: #ffffff;}
     padding-top: 20px;
   }
   
-  thead td .remove {
-    font-size: 32px;
-    font-weight: 100;
+  thead td .remove-icon {
+    font-size: 36px;
     top: 6px;
     right: 8px;
   }
@@ -313,9 +314,9 @@ tr:nth-child(even) {background-color: #ffffff;}
   }
 
   .property-cell .expand-icon {
-    right: 10px;
-    top: 10px;
-    font-size: 32px;
+    right: 4px;
+    top: 4px;
+    font-size: 30px;
   }
 
   table.card-dock td {

@@ -89,7 +89,7 @@ class CardDock extends React.PureComponent {
     return this.props.cardData.map(experimentCardSet => (
       <td key={'name'+experimentCardSet[0].eid} className='name'>
         {experimentCardSet[0].name||'(none)'}
-        <p onClick={this.removeCard.bind(this, experimentCardSet[0].eid)} className='remove'>✕</p>
+        <p onClick={this.removeCard.bind(this, experimentCardSet[0].eid)} className='remove-icon'>+</p>
       </td>
     ));
   }
