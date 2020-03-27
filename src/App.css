@@ -212,6 +212,14 @@ thead td .remove-icon {
   padding-right: 8px;
 }
 
+.property-cell.feature-header {
+  font-weight: bold;
+  text-align: center;
+}
+.property-cell.feature-header .property-value {
+  padding: 0;
+}
+
 .card-dock .location-cell-content,
 .card-dock .property-location-title {
   white-space: nowrap;

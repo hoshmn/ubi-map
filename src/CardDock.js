@@ -2,12 +2,14 @@ import React from 'react';
 import _ from 'lodash';
 
 const PROPERTY_LIST = [
-  'Implementation Dates',
   'Location',
+  'Implementation Dates',
   'Number of Recipients',
+  '*ORGANIZATIONAL FEATURES',
   'Implementing Agency',
   'Research Agency',
   'Funding Agency',
+  '*IMPLEMENTATION FEATURES',
   'Type of Targeting',
   'Unit of Recipient',
   'Amount of Transfer',
@@ -94,6 +96,11 @@ class CardDock extends React.PureComponent {
 
   getRows() {
     return PROPERTY_LIST.map(property => {
+      const isFeatureHeader = property.startsWith('*');
+      if (isFeatureHeader) {
+        property = property.slice(1);
+      }
+
       const expandible = this.getIsExpandible(property);
       // const expandible = true;
       const expanded = !!this.state.expandedProperties[property];
@@ -115,6 +122,9 @@ class CardDock extends React.PureComponent {
       if (expandible) {
         cellClass += ' expandible';
       }
+      if (isFeatureHeader) {
+        cellClass += ' feature-header';
+      }
   
       let valueClass = 'property-value';
       if (expanded) {
@@ -123,7 +133,7 @@ class CardDock extends React.PureComponent {
 
       const propertyCells = this.props.cardData.map(experimentCardSet => {
         
-        const cellContent = this.getCellContent(experimentCardSet, property);
+        const cellContent = isFeatureHeader ? null : this.getCellContent(experimentCardSet, property);
         return (
           <td className={cellClass} key={property+'-td-'+experimentCardSet[0].eid}>
             <div className='property-name'>{property}{expandIcon}</div>
