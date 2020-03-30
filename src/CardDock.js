@@ -1,6 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 
+
+// TODO: turn to objects with spreadName, isExpandible, etc (stab)
 const PROPERTY_LIST = [
   'Location',
   'Implementation Dates',
@@ -17,7 +19,7 @@ const PROPERTY_LIST = [
   'Method of Evaluation',
   'Additional Notes of Interest',
   'Link to Website',
-  'Links to Related Resources'
+  'Link to Related Resources'
 ];
 
 const EXPANDIBLE_LIST = [
@@ -27,11 +29,13 @@ const EXPANDIBLE_LIST = [
   'Type of Targeting',
   'Amount of Transfer',
   'Additional Notes of Interest',
-  'Link to Website',
-  'Links to Related Resources'
+  'Link to Related Resources'
 ];
 
-const FORCE_UNIFORM_VALUE = [];
+const LINK_URL_TEXT = 'Link to Related Resource';
+const LINK_TITLE_TEXT = 'Link title';
+
+const FORCE_UNIFORM_VALUE = ['Link to Website', 'Links to Related Resources'];
 
 // TODO: make more robust (stab)
 const convertToSpreadsheetFormat = property => {
@@ -133,7 +137,7 @@ class CardDock extends React.PureComponent {
 
       const propertyCells = this.props.cardData.map(experimentCardSet => {
         
-        const cellContent = isFeatureHeader ? null : this.getCellContent(experimentCardSet, property);
+        const cellContent = this.getCellContent(experimentCardSet, property);
         return (
           <td className={cellClass} key={property+'-td-'+experimentCardSet[0].eid}>
             <div className='property-name'>{property}{expandIcon}</div>
@@ -145,6 +149,7 @@ class CardDock extends React.PureComponent {
   }
 
   getIsExpandible(property) {
+    // 1) not expandible => F 2) has multiple locations w/diff values => T 3) sole value > 40Ms
     if (property === 'Location') {
       // if any experimint in the card dock has multiple locations, the cell should be expandible
       return _.some(this.props.cardData, expCardSet => expCardSet.length > 1);
@@ -155,6 +160,10 @@ class CardDock extends React.PureComponent {
   getCellContent(experimentCardSet, property) {
     if (property === 'Location') {
       return this.getLocationCellContent(experimentCardSet);
+    } else if (property.startsWith('*')) {
+      return null;
+    } else if (property.startsWith(LINK_URL_TEXT)) {
+      return this.getLinksContent(experimentCardSet);
     }
 
     const spreadsheetProperty = convertToSpreadsheetFormat(property);
@@ -195,8 +204,35 @@ class CardDock extends React.PureComponent {
       >
         {locationData.location}
       </div>
-    ))
+    ));
     return <>{cellContent}</>;
+  }
+
+  getLinksContent(experimentCardSet) {
+    const linkMap = {};
+    const orderedLinks = [];
+    experimentCardSet.forEach(locationData => {
+      for (let n = 0; n < 8; n++) {
+        const urlFieldName = `${LINK_URL_TEXT} ${n}`;
+        const urlValue = locationData[convertToSpreadsheetFormat(urlFieldName)];
+        if (urlValue && !linkMap[urlValue]) {
+          linkMap[urlValue] = true;
+          const titleFieldName = `${LINK_TITLE_TEXT} ${n}`;
+          const titleValue = locationData[convertToSpreadsheetFormat(titleFieldName)];
+          orderedLinks.push({ urlValue, titleValue: titleValue || urlValue });
+        }
+      }
+    });
+
+   return (
+      <div 
+        key={`cell-content-links-${experimentCardSet[0].eid}`}
+      >
+        {orderedLinks.map(link => (
+          <a key={link.urlValue} href={link.urlValue}>{link.titleValue}</a>
+        ))}
+      </div>
+    );
   }
     
   render() {

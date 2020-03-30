@@ -258,6 +258,11 @@ thead td .remove-icon {
   position: relative;
 }
 
+.property-value a {
+  display: block;
+  cursor: pointer;
+}
+
 /* alternating row colors */
 tr:nth-child(odd) {background-color: #f7f7f7;} 
 tr:nth-child(even) {background-color: #ffffff;} 
