@@ -5,6 +5,7 @@
   /* TODO: should we? (UI) */
   user-select: none;
   cursor: default;
+  font-family: sofia-pro, sans-serif;
 }
 
 html, body, #root, .app, .map-container {
@@ -237,7 +238,7 @@ thead td .remove-icon {
   /* transition: max-height ease 0.8s; */
 }
 .property-cell.expandible .property-value:not(.expanded) {
-  max-height: 30px;
+  max-height: 35px;
 }
 
 /* TODO: mixin? (dry) */
@@ -317,7 +318,7 @@ tr:nth-child(even) {background-color: #ffffff;}
     font-size: 20px;
   }
   .property-cell.expandible .property-value:not(.expanded) {
-    max-height: 42px;
+    max-height: 49px;
   }
 
   .property-cell .expand-icon {
