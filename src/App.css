@@ -136,14 +136,14 @@ html, body, #root, .app, .map-container {
 table.card-dock {
   z-index: 5;
   table-layout: fixed;
-  position: fixed;
+  position: relative;
   /* top of dock should sit _px above window bottom */
   top: calc(100vh - 100px); 
-  left: 0;
-  right: 0;
+  /* left: 0; */
+  /* right: 0; */
   margin: 0 auto;
   width: 100%;
-  min-width: 200px;
+  /* min-width: 200px; */
   /* max-width: 600px; */
   background: #f2f2f2;
   /* cursor: default; */
@@ -168,7 +168,7 @@ table.card-dock.card-count-3 {
 table.card-dock.maximized {
   top: calc(100vh - 125px);
   /* allows scrolling of cards */
-  position: absolute;
+  /* position: relative; */
   transition: top 0.6s ease;
 }
 
