@@ -141,7 +141,7 @@ table.card-dock {
   left: 0;
   right: 0;
   margin: 0 auto;
-  width: 80%;
+  width: 100%;
   min-width: 200px;
   /* max-width: 600px; */
   background: #f2f2f2;
