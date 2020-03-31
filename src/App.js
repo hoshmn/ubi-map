@@ -97,10 +97,10 @@ class App extends React.Component {
     }
     this.map.getCanvas().style.cursor = 'pointer';
     const { id: expId, properties } = e.features[0];    
-    const { name, location } = properties;
+    const { name, location, type } = properties;
     const { x, y } = e.point;
 
-    this.setState({ hovered: { expId, name, location, x, y } });
+    this.setState({ hovered: { expId, name, location, type, x, y } });
     this.map.setFeatureState({
         source: 'experiments',
         id: expId
@@ -136,7 +136,7 @@ class App extends React.Component {
   }
 
   getTooltip() {
-    const { expId, name, location, x, y } = this.state.hovered;
+    const { expId, name, location, type, x, y } = this.state.hovered;
     let otherLocations = [];
     if (expId) {
       const features = this.getFeaturesByExperimentId(expId);
@@ -144,7 +144,7 @@ class App extends React.Component {
         .map(f => f.location)
         .filter(l => l !== location);
     }
-    return <Tooltip expId={expId} name={name} location={location} otherLocations={otherLocations} x={x} y={y}/>;
+    return <Tooltip expId={expId} name={name} location={location} otherLocations={otherLocations} type={type} x={x} y={y}/>;
   }
 
   getCardDock() {

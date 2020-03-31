@@ -60,10 +60,10 @@ html, body, #root, .app, .map-container {
   background: rgba(0,80,92,.8);
 }
 .legend i.ongoing {
-  background: rgba(223,70,73,.8);
+  background: rgba(175,105,12,.8);
 }
 .legend i.proposed {
-  background: rgba(175,105,12,.8);
+  background: rgba(223,70,73,.8);
 }
 
 .legend .expand-icon {
@@ -93,8 +93,18 @@ html, body, #root, .app, .map-container {
   max-width: 210px;
   /* margin: 0; */
   box-shadow: rgba(0, 0, 0, 0.1) 3px 3px 5px;
-  border-top: #c0c0c0 solid 7px;
+  border-top: gray solid 8px;
   border-radius: 4px;
+}
+
+.tooltip.past {
+  border-top-color: rgba(0,80,92,.8);
+}
+.tooltip.ongoing {
+  border-top-color: rgba(175,105,12,.8);
+}
+.tooltip.proposed {
+  border-top-color: rgba(223,70,73,.8);
 }
 
 .tooltip .detail {
@@ -145,10 +155,12 @@ table.card-dock {
   width: 100%;
   /* min-width: 200px; */
   /* max-width: 600px; */
-  background: #f2f2f2;
+  /* background: #f2f2f2; */
   /* cursor: default; */
-  border-top: #c0c0c0 solid 7px;
-  border-radius: 4px;
+  /* border-top: #c0c0c0 solid 7px; */
+  /* border-radius: 4px; */
+  /* border-collapse: collapse; */
+  border-spacing: 0px;
   box-shadow: rgba(0, 0, 0, 0.1) 2px 2px 4px;
 }
 
@@ -172,8 +184,9 @@ table.card-dock.maximized {
   transition: top 0.6s ease;
 }
 
-td {
+tr:not(:first-child) td:not(:first-child) {
   /* max-width: 200px; */
+  border-left: solid #f2f2f2 1px;
 }
 
 thead td {
@@ -185,6 +198,27 @@ thead td {
   word-wrap: break-word;
   position: relative;
   font-weight: bold;
+}
+
+thead td.name {
+  border-top: gray solid 8px;
+  /* border-radius: 4px; */
+  /* border-collapse: separate; */
+}
+thead td.name:first-child {
+  border-top-left-radius: 3px;
+}
+thead td.name:last-child {
+  border-top-right-radius: 3px;
+}
+  thead td.name.past {
+  border-top-color: rgba(0,80,92,.8);
+}
+thead td.name.ongoing {
+  border-top-color: rgba(175,105,12,.8);
+}
+thead td.name.proposed {
+  border-top-color: rgba(223,70,73,.8);
 }
 
 thead td .remove-icon {

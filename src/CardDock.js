@@ -35,7 +35,7 @@ const EXPANDIBLE_LIST = [
 const LINK_URL_TEXT = 'Link to Related Resource';
 const LINK_TITLE_TEXT = 'Link title';
 
-const FORCE_UNIFORM_VALUE = ['Link to Website', 'Links to Related Resources'];
+const FORCE_UNIFORM_VALUE = ['Link to Website'];
 
 // TODO: make more robust (stab)
 const convertToSpreadsheetFormat = property => {
@@ -90,12 +90,15 @@ class CardDock extends React.PureComponent {
 
   getNames() {
     // TODO: don't bind in render (perf)
-    return this.props.cardData.map(experimentCardSet => (
-      <td key={'name'+experimentCardSet[0].eid} className='name'>
-        {experimentCardSet[0].name||'(none)'}
-        <p onClick={this.removeCard.bind(this, experimentCardSet[0].eid)} className='remove-icon'>+</p>
-      </td>
-    ));
+    return this.props.cardData.map(experimentCardSet => {
+      const { eid, name, type } = experimentCardSet[0];
+      const classes = 'name ' + type;
+      return (
+        <td key={'name'+eid} className={classes}>
+          {name||'(none)'}
+          <p onClick={this.removeCard.bind(this, eid)} className='remove-icon'>+</p>
+        </td>
+    )});
   }
 
   getRows() {
@@ -170,10 +173,12 @@ class CardDock extends React.PureComponent {
 
     const [locationOneData, ...otherLocationsData] = experimentCardSet;
     const firstValue = locationOneData[spreadsheetProperty];
-    const uniformValue = _.every(otherLocationsData, l => l[spreadsheetProperty] === firstValue);
+    const uniformValue = FORCE_UNIFORM_VALUE.includes(property) || _.every(otherLocationsData, l => l[spreadsheetProperty] === firstValue);
     
     let cellContent;
-    if (uniformValue) {
+    if (property.startsWith('Link to Website') && firstValue.includes('.')) {
+      cellContent = <a href={firstValue} target="_blank">{firstValue}</a>;
+    } else if (uniformValue) {
       cellContent = firstValue;
     } else {
       // break cell into block for each location, as they have different values
@@ -229,7 +234,7 @@ class CardDock extends React.PureComponent {
         key={`cell-content-links-${experimentCardSet[0].eid}`}
       >
         {orderedLinks.map(link => (
-          <a key={link.urlValue} href={link.urlValue}>{link.titleValue}</a>
+          <a key={link.urlValue} href={link.urlValue} target="_blank">{link.titleValue}</a>
         ))}
       </div>
     );
