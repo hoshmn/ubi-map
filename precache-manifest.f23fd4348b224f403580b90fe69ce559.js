@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "8d6ad69a94eec0fa34a2e4993129aaeb",
+    "revision": "21d4f2d55444068601ba507d30de56ef",
     "url": "/ubi-map/index.html"
   },
   {
-    "revision": "bc12f5beb9a0b63eb4b1",
-    "url": "/ubi-map/static/css/main.b5ac482a.chunk.css"
+    "revision": "e99420ccf07ec660e80f",
+    "url": "/ubi-map/static/css/main.a9933757.chunk.css"
   },
   {
     "revision": "adbe4a3b0badce0dcc2d",
@@ -16,7 +16,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/ubi-map/static/js/2.ba2731f5.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "bc12f5beb9a0b63eb4b1",
+    "revision": "e99420ccf07ec660e80f",
     "url": "/ubi-map/static/js/main.01f619cf.chunk.js"
   },
   {
