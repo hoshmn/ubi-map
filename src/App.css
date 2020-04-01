@@ -6,6 +6,7 @@
   user-select: none;
   cursor: default;
   font-family: sofia-pro, sans-serif;
+  font-weight: 400;
 }
 
 html, body, #root, .app, .map-container {
@@ -37,20 +38,20 @@ html, body, #root, .app, .map-container {
 }
 
 /* LEGEND */
-.legend {
+div.legend {
   position: fixed;
   top: 8px;
   right: 8px;
   background: #ffffffcc;
   padding: 8px;
   border-radius: 4px;
-  font-weight: lighter;
   font-size: 12px;
   text-transform: uppercase;
   box-shadow: rgba(0, 0, 0, 0.1) 3px 3px 5px;
 }
 .legend div {
   padding: 4px;
+  font-weight: 300;
 }
 
 .legend i {
@@ -75,6 +76,7 @@ html, body, #root, .app, .map-container {
   right: 5px;
   top: 5px;
   width: 16px;
+  stroke-width: 5;
   /* user-select: none; */
 }
 
@@ -121,7 +123,7 @@ html, body, #root, .app, .map-container {
 }
 
 .tooltip .name {
-  font-weight: bold;
+  font-weight: 700;
   font-size: 14px;
   /* padding: 8px; */
 }
@@ -135,7 +137,7 @@ html, body, #root, .app, .map-container {
 
 .tooltip .location-title {
   padding-top: 8px;
-  font-weight: lighter;
+  font-weight: 300;
   font-size: 9px;
   text-transform: uppercase;
   /* color: grey; */
@@ -143,7 +145,7 @@ html, body, #root, .app, .map-container {
 }
 
 .tooltip .hovered-location.emphasized {
-  font-weight: bold;
+  font-weight: 700;
 }
 
 /* CARD DOCK */
@@ -201,7 +203,7 @@ thead td {
   padding: 12px 12px 8px 8px;
   word-wrap: break-word;
   position: relative;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 thead td.name {
@@ -235,26 +237,31 @@ thead td .remove-icon {
 /* TODO: mixin? (dry) */
 .card-dock .property-name,
 .card-dock .property-location-title {
-  font-weight: lighter;
+  font-weight: 300;
   font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   /* color: grey; */
   /* display: inline; */
 }
+.card-dock .property-location-title {
+  padding-top: 3px;
+}
+
 .property-cell.expandible .property-name {
   /* make room for trigger-icon */
   padding-right: 10px;
 }
 
 .property-cell.feature-header {
-  font-weight: bold;
+  font-weight: 700;
   text-align: center;
 }
 .property-cell.feature-header .property-value {
   padding: 0;
 }
 
+/* location names (both as titles and in location field) should only be given a single line */
 .card-dock .location-cell-content,
 .card-dock .property-location-title {
   white-space: nowrap;
@@ -302,7 +309,7 @@ tr:nth-child(even) {background-color: #ffffff;}
 
 @media (max-width: 650px) {
   /* LEGEND */
-  .legend {
+  div.legend {
     position: fixed;
     top: 0;
     right: 0;
@@ -310,18 +317,18 @@ tr:nth-child(even) {background-color: #ffffff;}
     padding: 0;
     background: white;
   }
-  .legend .content {
+  div.legend .content {
     padding: 16px;
     font-size: 18px;
     letter-spacing: 0.1em;
   }
-  .legend i {
+  div.legend i {
     width: 14px;
     height: 14px;
     border-radius: 7px;
     margin-right: 14px;
   }
-  .legend .trigger-icon {
+  div.legend .trigger-icon {
     width: 25px;
     right: 10px;
     top: 10px;
