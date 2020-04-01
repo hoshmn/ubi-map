@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import TriggerIcon, { ICON_TYPE } from './TriggerIcon';
 
 
 // TODO: turn to objects with spreadName, isExpandible, etc (stab)
@@ -96,7 +97,7 @@ class CardDock extends React.PureComponent {
       return (
         <td key={'name'+eid} className={classes}>
           {name||'(none)'}
-          <p onClick={this.removeCard.bind(this, eid)} className='remove-icon'>+</p>
+          <TriggerIcon iconType={ICON_TYPE.REMOVE} onClick={this.removeCard.bind(this, eid)} />
         </td>
     )});
   }
@@ -115,13 +116,12 @@ class CardDock extends React.PureComponent {
       let expandIcon = null;
       if (expandible) {
         // TODO: also don't bind in render (perf)
+        const iconType = expanded ? ICON_TYPE.COLLAPSE : ICON_TYPE.EXPAND;
         expandIcon = (
-          <p
+          <TriggerIcon
             onClick={this.toggleProperty.bind(this, property, expanded)}
-            className='expand-icon'
-          >
-            {expanded ? '-' : '+'}
-          </p>
+            iconType={iconType}
+          />
         );
       }
 

@@ -13,10 +13,14 @@ html, body, #root, .app, .map-container {
   width: 100%;
 }
 
-.remove-icon, .expand-icon {
-  /* TODO: chrome mobile doesn't recognize? */
-  text-transform: full-width;
-  font-weight: 100;
+.trigger-icon {
+  stroke: black;
+  stroke-width: 3;
+  /* width: 14px; */
+  /* position: absolute; */
+  /* right: 9px; */
+  cursor: pointer;
+  fill: none;
 }
 
 .app {
@@ -66,17 +70,17 @@ html, body, #root, .app, .map-container {
   background: rgba(223,70,73,.8);
 }
 
-.legend .expand-icon {
+.legend .trigger-icon {
   position: absolute;
-  right: -3px;
-  top: 2px;
-  cursor: pointer;
+  right: 5px;
+  top: 5px;
+  width: 16px;
   /* user-select: none; */
 }
 
 .legend.hidden {
-  height: 5px;
-  width: 12px;
+  height: 10px;
+  width: 10px;
 }
 .legend.hidden .content {
   display: none;
@@ -223,13 +227,9 @@ thead td.name.proposed {
 
 thead td .remove-icon {
   position: absolute;
-  font-size: 26px;
-  top: 2px;
-  right: 2px;
-  /* font-weight: 100; */
-  transform: rotate(45deg);
-  cursor: pointer;
-  /* user-select: none; */
+  width: 14px;
+  top: 6px;
+  right: 6px;
 }
 
 /* TODO: mixin? (dry) */
@@ -243,8 +243,8 @@ thead td .remove-icon {
   /* display: inline; */
 }
 .property-cell.expandible .property-name {
-  /* make room for expand-icon */
-  padding-right: 8px;
+  /* make room for trigger-icon */
+  padding-right: 10px;
 }
 
 .property-cell.feature-header {
@@ -276,13 +276,12 @@ thead td .remove-icon {
 }
 
 /* TODO: mixin? (dry) */
-.property-cell .expand-icon {
+.property-cell .trigger-icon {
   position: absolute;
-  display: inline;
-  right: 2px;
-  top: 0px;
-  font-size: 20px;
-  cursor: pointer;
+  /* display: inline; */
+  width: 14px;
+  right: 5px;
+  top: 9px;
   /* user-select: none; */
 }
 
@@ -322,8 +321,10 @@ tr:nth-child(even) {background-color: #ffffff;}
     border-radius: 7px;
     margin-right: 14px;
   }
-  .legend .expand-icon {
-    font-size: 20px;
+  .legend .trigger-icon {
+    width: 25px;
+    right: 10px;
+    top: 10px;
   }
 
   /* DOCK */
@@ -334,16 +335,18 @@ tr:nth-child(even) {background-color: #ffffff;}
     top: calc(100vh - 175px);
   }
 
-  thead td {
+  table.card-dock thead td {
     font-size: 20px;
     line-height: 32px;
     height: 80px;
-    padding-top: 20px;
+    /* padding-top: 20px; */
+    /* make room for trigger-icon */
+    padding-right: 40px;
   }
   
   thead td .remove-icon {
-    font-size: 36px;
-    top: 6px;
+    width: 40px;
+    top: 12px;
     right: 8px;
   }
 
@@ -360,10 +363,10 @@ tr:nth-child(even) {background-color: #ffffff;}
     max-height: 49px;
   }
 
-  .property-cell .expand-icon {
-    right: 4px;
-    top: 4px;
-    font-size: 30px;
+  .property-cell .trigger-icon {
+    width: 30px;
+    right: 7px;
+    top: 20px;
   }
 
   table.card-dock td {
