@@ -6,6 +6,7 @@ import mapboxgl from 'mapbox-gl';
 import _ from 'lodash';
 import styleData from './style.json';
 import './App.css';
+import { SHEET_FIELDS } from './fields';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 const MAX_SELECTED_POINTS = 3;
@@ -97,10 +98,18 @@ class App extends React.Component {
     }
     this.map.getCanvas().style.cursor = 'pointer';
     const { id: expId, properties } = e.features[0];    
-    const { name, location, type } = properties;
     const { x, y } = e.point;
 
-    this.setState({ hovered: { expId, name, location, type, x, y } });
+    this.setState({ 
+      hovered: {
+        name: properties[SHEET_FIELDS.NAME.sheetName],
+        location: properties[SHEET_FIELDS.LOCATION.sheetName],
+        type: properties[SHEET_FIELDS.TYPE.sheetName],
+        expId,
+        x,
+        y 
+      }
+    });
     this.map.setFeatureState({
         source: 'experiments',
         id: expId
@@ -168,34 +177,48 @@ class App extends React.Component {
   }
 }
 
+let nextEidNumber = 0;
+const eidMap = {};
+
 function load () {
   // startsWith polyfill
   if (!String.prototype.startsWith) {
     Object.defineProperty(String.prototype, 'startsWith', {
         value: function(search, rawPos) {
-            var pos = rawPos > 0 ? rawPos|0 : 0;
+            const pos = rawPos > 0 ? rawPos|0 : 0;
             return this.substring(pos, pos + search.length) === search;
         }
     });
   }
 
-  var experimentsData = { type: 'FeatureCollection', features: [] };
+  const experimentsData = { type: 'FeatureCollection', features: [] };
 
   const reqHandler = (source, req) => {
-    var rows = JSON.parse(req.responseText).feed.entry;
-    var properties = Object.keys(rows[0])
+    const [ columnHeaderRow, ...rows ] = JSON.parse(req.responseText).feed.entry;
+    const properties = Object.keys(rows[0])
       .filter(function (p) { 
         return p.startsWith('gsx$') & !p.endsWith('_db1zf');
       })
       .map(function (p) { return p.substr(4); });
     
-    var items = rows.map(function (r, ri) {
-      var row = {};
+    const items = rows.map(function (r, ri) {
+      const row = {};
       properties.forEach(function (p) {
         row[p] = r['gsx$' + p].$t === '' ? null : r['gsx$' + p].$t;
-        // mapbox wants numeric lat/long, and coerces id to num (so avoid type error headache)
-        if (['latitude', 'longitude', 'eid', 'uid'].indexOf(p) !== -1) {
+        if ([SHEET_FIELDS.LATITUDE.sheetName, SHEET_FIELDS.LONGITUDE.sheetName].indexOf(p) !== -1) {
+          // mapbox wants numeric lat/long
           row[p] = +row[p];
+        }
+        if (p === SHEET_FIELDS.EID.sheetName) {
+          // convert the string eids from the sheet into numeric ids (which mapbox expects)
+          const stringEid = row[p];
+          const numericEid = eidMap[stringEid] || nextEidNumber++;
+          eidMap[stringEid] = numericEid;
+          row[p] = numericEid;
+        }
+        if (p === SHEET_FIELDS.TYPE.sheetName) {
+          // force lower case to simplify equality comparisons
+          row[p] = row[p].toLowerCase();
         }
         if (row[p] === null) {
           row[p] = '';
@@ -203,22 +226,23 @@ function load () {
       });
       return {
         type: 'Feature',
-        id: row.eid,
+        id: row[SHEET_FIELDS.EID.sheetName],
         geometry: {
           type: 'Point',
-          coordinates: [row.longitude, row.latitude]
+          coordinates: [row[SHEET_FIELDS.LONGITUDE.sheetName], row[SHEET_FIELDS.LATITUDE.sheetName]]
         },
         properties: row
       };
     });
-
-    experimentsData = { type: 'FeatureCollection', features: items };
+    
+    experimentsData.features.push(...items);
     this.map.getSource('experiments').setData(experimentsData);
   }
 
   // Fetch Local Article Data
-  var experimentsReq = new XMLHttpRequest();
+  const experimentsReq = new XMLHttpRequest();
   experimentsReq.addEventListener('load',  () => { reqHandler('experiments', experimentsReq) });
+  console.log(process.env.REACT_APP_SHEET_URL);
   experimentsReq.open('GET', process.env.REACT_APP_SHEET_URL);
   experimentsReq.send();
 }

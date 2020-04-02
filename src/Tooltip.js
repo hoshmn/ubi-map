@@ -1,6 +1,5 @@
 import React from 'react';
 
-const TOOLTIP_DIMENSIONS = { width: 200, height: 175 };
 const POINT_BUFFER = 7;
 
 class Tooltip extends React.Component {
