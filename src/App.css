@@ -261,12 +261,15 @@ thead td .remove-icon {
   padding: 0;
 }
 
-/* location names (both as titles and in location field) should only be given a single line */
-.card-dock .location-cell-content,
+/* location titles should only be given a single line */
 .card-dock .property-location-title {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.location-cell-content:not(:last-child) {
+  padding-bottom: 5px;
 }
 
 /* TODO: mixin? (dry) */
@@ -301,6 +304,7 @@ thead td .remove-icon {
 .property-value a {
   display: block;
   cursor: pointer;
+  padding-bottom: 8px;
 }
 
 /* alternating row colors */
