@@ -49,9 +49,9 @@ class CardDock extends React.PureComponent {
     // TODO: don't bind in render (perf)
     return this.props.cardData.map(experimentCardSet => {
       const {
-        [EID.sheetName]: eid,
-        [NAME.sheetName]: name,
-        [TYPE.sheetName]: type
+        [EID.sheetId]: eid,
+        [NAME.sheetId]: name,
+        [TYPE.sheetId]: type
       } = experimentCardSet[0];
       const classes = 'name ' + type;
       return (
@@ -64,11 +64,11 @@ class CardDock extends React.PureComponent {
 
   getRows() {
     return ORDERED_CARD_FIELDS.map(field => {
-      const { displayName, sheetName, isFeatureHeader } = field;
+      const { displayName, sheetId, isFeatureHeader } = field;
 
       const expandible = this.getIsExpandible(field);
 
-      const expanded = !!this.state.expandedProperties[field.sheetName];
+      const expanded = !!this.state.expandedProperties[field.sheetId];
 
       let expandIcon = null;
       if (expandible) {
@@ -76,7 +76,7 @@ class CardDock extends React.PureComponent {
         const iconType = expanded ? ICON_TYPE.COLLAPSE : ICON_TYPE.EXPAND;
         expandIcon = (
           <TriggerIcon
-            onClick={this.toggleProperty.bind(this, field.sheetName, expanded)}
+            onClick={this.toggleProperty.bind(this, field.sheetId, expanded)}
             iconType={iconType}
           />
         );
@@ -98,7 +98,7 @@ class CardDock extends React.PureComponent {
       const propertyCells = this.props.cardData.map(experimentCardSet => {
         
         const cellContent = this.getCellContent(experimentCardSet, field);
-        const { [EID.sheetName]: eid } = experimentCardSet[0];
+        const { [EID.sheetId]: eid } = experimentCardSet[0];
         return (
           <td className={cellClass} key={displayName+'-td-'+eid}>
             <div className='property-name'>{displayName}{expandIcon}</div>
@@ -127,10 +127,10 @@ class CardDock extends React.PureComponent {
       return this.getLinksContent(experimentCardSet);
     }
 
-    const { sheetName } = field;
+    const { sheetId } = field;
     const [locationOneData, ...otherLocationsData] = experimentCardSet;
-    const firstValue = locationOneData[sheetName];
-    const uniformValue = field.forceUniformValue || _.every(otherLocationsData, l => l[sheetName] === firstValue);
+    const firstValue = locationOneData[sheetId];
+    const uniformValue = field.forceUniformValue || _.every(otherLocationsData, l => l[sheetId] === firstValue);
     
     let cellContent;
     if (field === WEBSITE && firstValue.includes('.')) {
@@ -141,18 +141,18 @@ class CardDock extends React.PureComponent {
       // break cell into block for each location, as they have different values
       cellContent = experimentCardSet.map(locationData => {
         const {
-          [EID.sheetName]: eid,
-          [LOCATION.sheetName]: location,
+          [EID.sheetId]: eid,
+          [LOCATION.sheetId]: location,
         } = locationData;
         return (
-          <div key={`cell-content-${sheetName}-${eid}-${location}`}>
+          <div key={`cell-content-${sheetId}-${eid}-${location}`}>
             <div 
               title={location}
               className='property-location-title'
             >
               {location}
             </div>
-            {locationData[sheetName]}
+            {locationData[sheetId]}
           </div>
         )
       })
@@ -164,8 +164,8 @@ class CardDock extends React.PureComponent {
   getLocationCellContent(experimentCardSet) {
     const cellContent = experimentCardSet.map(locationData => {
       const {
-        [EID.sheetName]: eid,
-        [LOCATION.sheetName]: location,
+        [EID.sheetId]: eid,
+        [LOCATION.sheetId]: location,
       } = locationData;
       return (
         <div 
@@ -184,10 +184,10 @@ class CardDock extends React.PureComponent {
     const orderedLinks = [];
     experimentCardSet.forEach(locationData => {
       LINK_FIELD_PAIRS.forEach(({ urlField, titleField }) => {
-        const urlValue = locationData[urlField.sheetName];
+        const urlValue = locationData[urlField.sheetId];
         if (urlValue && !linkMap[urlValue]) {
           linkMap[urlValue] = true;
-          const titleValue = locationData[titleField.sheetName] || urlValue;
+          const titleValue = locationData[titleField.sheetId] || urlValue;
           orderedLinks.push({ urlValue, titleValue });
         }
       })
@@ -195,7 +195,7 @@ class CardDock extends React.PureComponent {
     
     return (
       <div 
-        key={`cell-content-links-${experimentCardSet[0][EID.sheetName]}`}
+        key={`cell-content-links-${experimentCardSet[0][EID.sheetId]}`}
       >
         {orderedLinks.map(({ urlValue, titleValue }) => (
           <a key={urlValue} href={urlValue} target="_blank">{titleValue}</a>

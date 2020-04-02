@@ -8,6 +8,8 @@ import styleData from './style.json';
 import './App.css';
 import { SHEET_FIELDS } from './fields';
 
+const { LONGITUDE, LATITUDE, NAME, LOCATION, TYPE, EID } = SHEET_FIELDS;
+
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 const MAX_SELECTED_POINTS = 3;
 
@@ -102,9 +104,9 @@ class App extends React.Component {
 
     this.setState({ 
       hovered: {
-        name: properties[SHEET_FIELDS.NAME.sheetName],
-        location: properties[SHEET_FIELDS.LOCATION.sheetName],
-        type: properties[SHEET_FIELDS.TYPE.sheetName],
+        name: properties[NAME.sheetId],
+        location: properties[LOCATION.sheetId],
+        type: properties[TYPE.sheetId],
         expId,
         x,
         y 
@@ -205,18 +207,18 @@ function load () {
       const row = {};
       properties.forEach(function (p) {
         row[p] = r['gsx$' + p].$t === '' ? null : r['gsx$' + p].$t;
-        if ([SHEET_FIELDS.LATITUDE.sheetName, SHEET_FIELDS.LONGITUDE.sheetName].indexOf(p) !== -1) {
+        if ([LATITUDE.sheetId, LONGITUDE.sheetId].indexOf(p) !== -1) {
           // mapbox wants numeric lat/long
           row[p] = +row[p];
         }
-        if (p === SHEET_FIELDS.EID.sheetName) {
+        if (p === EID.sheetId) {
           // convert the string eids from the sheet into numeric ids (which mapbox expects)
           const stringEid = row[p];
           const numericEid = eidMap[stringEid] || nextEidNumber++;
           eidMap[stringEid] = numericEid;
           row[p] = numericEid;
         }
-        if (p === SHEET_FIELDS.TYPE.sheetName) {
+        if (p === TYPE.sheetId) {
           // force lower case to simplify equality comparisons
           row[p] = row[p].toLowerCase();
         }
@@ -226,10 +228,10 @@ function load () {
       });
       return {
         type: 'Feature',
-        id: row[SHEET_FIELDS.EID.sheetName],
+        id: row[EID.sheetId],
         geometry: {
           type: 'Point',
-          coordinates: [row[SHEET_FIELDS.LONGITUDE.sheetName], row[SHEET_FIELDS.LATITUDE.sheetName]]
+          coordinates: [row[LONGITUDE.sheetId], row[LATITUDE.sheetId]]
         },
         properties: row
       };
