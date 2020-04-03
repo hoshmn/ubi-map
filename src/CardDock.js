@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import TriggerIcon, { ICON_TYPE } from './TriggerIcon';
 import { SHEET_FIELDS, ORDERED_CARD_FIELDS, COMPOSITE_FIELDS, LINK_FIELD_PAIRS } from './fields';
+import ScrollHint from './ScrollHint';
 
 const { LOCATION, NAME, EID, TYPE, WEBSITE } = SHEET_FIELDS;
 
@@ -10,7 +11,7 @@ class CardDock extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = { minimized: true, expandedProperties: {} };
+    this.state = { minimized: true, expandedProperties: {}, scrollHintDismissed: false };
 
     this.removeCard = this.removeCard.bind(this);
     this.slideDock = this.slideDock.bind(this);
@@ -205,7 +206,7 @@ class CardDock extends React.PureComponent {
   }
     
   render() {
-    let classes = 'card-dock ';
+    let classes = 'card-dock-container ';
     classes += `card-count-${this.props.cardData.length}`;
     if (!this.state.minimized) {
       classes += ' maximized';
@@ -216,16 +217,19 @@ class CardDock extends React.PureComponent {
         onWheel={this.slideDock}
         onDoubleClick={this.toggleDock}
         onTouchStart={this.maximizeDock}
-        className={classes}
+        className={'card-dock-wrapper'}
       >
-        <table>
-          <thead>
-            <tr>{this.getNames()}</tr>
-          </thead>
-          <tbody>
-            {this.getRows()}
-          </tbody>
-        </table>
+        <div className={classes}>
+          {<ScrollHint dismissed={this.state.scrollHintDismissed} />}
+          <table className="card-dock">
+            <thead>
+              <tr>{this.getNames()}</tr>
+            </thead>
+            <tbody>
+              {this.getRows()}
+            </tbody>
+          </table>
+        </div>
       </div>
     )
   }

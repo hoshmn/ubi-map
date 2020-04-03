@@ -35,7 +35,7 @@ html, body, #root, .app, .map-container {
 }
 
 /* LEGEND */
-div.legend {
+.legend {
   position: fixed;
   top: 8px;
   right: 8px;
@@ -137,7 +137,17 @@ div.legend {
 }
 
 /* CARD DOCK */
-div.card-dock {
+.scroll-hint {
+  text-align: center;
+}
+.scroll-hint .content {
+  color: rgba(59, 123, 138);
+  background: rgba(244, 253, 255);
+  display: inline;
+  padding: 22px;
+}
+
+.card-dock-wrapper {
   z-index: 5;
   position: relative;
   /* dock background initially just off-screen, appears when user scrolls up */
@@ -147,10 +157,13 @@ div.card-dock {
   background: white;
 }
 
-div.card-dock table {
+.card-dock-wrapper .card-dock-container {
   position: relative;
   /* top of card should stick up above window bottom */
   top: -100px;
+}
+
+.card-dock-container table {
   /* without width explicitly set, fixed table-layout won't apply */
   width: 100%;
   table-layout: fixed;
@@ -159,20 +172,20 @@ div.card-dock table {
   /* box-shadow: rgba(0, 0, 0, 0.1) 2px 2px 4px; */
 }
 
-div.card-dock.card-count-1 table {
+.card-dock-container.card-count-1 {
   min-width: 300px;
   max-width: 325px;
 }
-div.card-dock.card-count-2 table {
+.card-dock-container.card-count-2 {
   min-width: 600px;
   max-width: 650px;
 }
-div.card-dock.card-count-3 table {
+.card-dock-container.card-count-3 {
   min-width: 900px;
   max-width: 975px;
 }
 
-div.card-dock.maximized {
+.card-dock-container.maximized {
   /* TODO: is there a maximized dock distinction? */
   /* top: 100vh; */
   /* allows scrolling of cards */
@@ -306,7 +319,7 @@ tr:nth-child(even) {background-color: #ffffff;}
 
 @media (max-width: 650px) {
   /* LEGEND */
-  div.legend {
+  .legend {
     position: fixed;
     top: 0;
     right: 0;
@@ -314,18 +327,18 @@ tr:nth-child(even) {background-color: #ffffff;}
     padding: 0;
     background: white;
   }
-  div.legend .content {
+  .legend .content {
     padding: 16px;
     font-size: 18px;
     letter-spacing: 0.1em;
   }
-  div.legend i {
+  .legend i {
     width: 14px;
     height: 14px;
     border-radius: 7px;
     margin-right: 14px;
   }
-  div.legend .trigger-icon {
+  .legend .trigger-icon {
     width: 25px;
     right: 10px;
     top: 10px;
@@ -333,13 +346,13 @@ tr:nth-child(even) {background-color: #ffffff;}
 
   /* DOCK */
   /* for smaller screens, don't "dock" */
-  div.card-dock,
-  div.card-dock.maximized {
-    position: absolute;
-    top: 100vh;
+  .card-dock-container,
+  .card-dock-container.maximized {
+    /* position: absolute;
+    top: 100vh; */
   }
 
-  div.card-dock thead td {
+  .card-dock thead td {
     font-size: 20px;
     line-height: 32px;
     height: 80px;
@@ -372,21 +385,21 @@ tr:nth-child(even) {background-color: #ffffff;}
     top: 20px;
   }
 
-  div.card-dock td {
+  .card-dock td {
     padding: 22px;
   }
 
-  div.card-dock.card-count-1 table {
+  .card-dock-container.card-count-1 {
     /* min-width: 325px; */
     width: 100%;
     max-width: unset;
   }
-  div.card-dock.card-count-2 table {
+  .card-dock-container.card-count-2 {
     /* min-width: 650px; */
     width: 150%;
     max-width: unset;
   }
-  div.card-dock.card-count-3 table {
+  .card-dock-container.card-count-3 {
     /* min-width: 975px; */
     width: 200%;
     max-width: unset;
