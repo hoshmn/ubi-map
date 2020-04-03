@@ -216,8 +216,9 @@ class CardDock extends React.PureComponent {
         onWheel={this.slideDock}
         onDoubleClick={this.toggleDock}
         onTouchStart={this.maximizeDock}
+        className={classes}
       >
-        <table className={classes}>
+        <table>
           <thead>
             <tr>{this.getNames()}</tr>
           </thead>

@@ -17,9 +17,6 @@ html, body, #root, .app, .map-container {
 .trigger-icon {
   stroke: black;
   stroke-width: 3;
-  /* width: 14px; */
-  /* position: absolute; */
-  /* right: 9px; */
   cursor: pointer;
   fill: none;
 }
@@ -92,12 +89,10 @@ div.legend {
 .tooltip {
   z-index: 10;
   background: white;
-  /* border: black solid 1px; */
   /* overflows map with absolute */
   position: fixed;
   padding: 15px;
   max-width: 210px;
-  /* margin: 0; */
   box-shadow: rgba(0, 0, 0, 0.1) 3px 3px 5px;
   border-top: gray solid 8px;
   border-radius: 4px;
@@ -115,22 +110,17 @@ div.legend {
 
 .tooltip .detail {
   /* TODO: ? (UI) */
-  /* max-height: 70px;
-  overflow: hidden; */
   font-size: 12px;
   padding-top: 5px;
-  /* margin: 0; */
 }
 
 .tooltip .name {
   font-weight: 700;
   font-size: 14px;
-  /* padding: 8px; */
 }
 
 .tooltip .click-hint {
   font-size: 8px;
-  /* font-weight: bold; */
   padding-top: 5px;
   text-align: center;
 }
@@ -140,8 +130,6 @@ div.legend {
   font-weight: 300;
   font-size: 9px;
   text-transform: uppercase;
-  /* color: grey; */
-  /* display: inline; */
 }
 
 .tooltip .hovered-location.emphasized {
@@ -149,49 +137,51 @@ div.legend {
 }
 
 /* CARD DOCK */
-table.card-dock {
+div.card-dock {
   z-index: 5;
-  table-layout: fixed;
   position: relative;
-  /* top of dock should sit _px above window bottom */
-  top: calc(100vh - 100px); 
-  /* left: 0; */
-  /* right: 0; */
-  margin: 0 auto;
+  /* dock background initially just off-screen, appears when user scrolls up */
+  top: 100vh;
   width: 100%;
-  /* min-width: 200px; */
-  /* max-width: 600px; */
-  /* background: #f2f2f2; */
-  /* cursor: default; */
-  /* border-top: #c0c0c0 solid 7px; */
-  /* border-radius: 4px; */
-  /* border-collapse: collapse; */
-  border-spacing: 0px;
-  box-shadow: rgba(0, 0, 0, 0.1) 2px 2px 4px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px 3px;
+  background: white;
 }
 
-table.card-dock.card-count-1 {
+div.card-dock table {
+  position: relative;
+  /* top of card should stick up above window bottom */
+  top: -100px;
+  /* without width explicitly set, fixed table-layout won't apply */
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 0px;
+  box-shadow: rgba(0, 0, 0, 0.1) -2px -4px 10px 2px;
+  /* box-shadow: rgba(0, 0, 0, 0.1) 2px 2px 4px; */
+}
+
+div.card-dock.card-count-1 table {
   min-width: 300px;
   max-width: 325px;
 }
-table.card-dock.card-count-2 {
+div.card-dock.card-count-2 table {
   min-width: 600px;
   max-width: 650px;
 }
-table.card-dock.card-count-3 {
+div.card-dock.card-count-3 table {
   min-width: 900px;
   max-width: 975px;
 }
 
-table.card-dock.maximized {
-  top: calc(100vh - 125px);
+div.card-dock.maximized {
+  /* TODO: is there a maximized dock distinction? */
+  /* top: 100vh; */
   /* allows scrolling of cards */
   /* position: relative; */
   transition: top 0.6s ease;
 }
 
 tr:not(:first-child) td:not(:first-child) {
-  /* max-width: 200px; */
+  /* for a subtle division between cards */
   border-left: solid #f2f2f2 1px;
 }
 
@@ -202,22 +192,16 @@ thead td {
   letter-spacing: 0.03em;
   padding: 12px 12px 8px 8px;
   word-wrap: break-word;
+  /* so trigger has a positioned element to hang onto */
   position: relative;
   font-weight: 700;
 }
 
 thead td.name {
-  border-top: gray solid 8px;
-  /* border-radius: 4px; */
-  /* border-collapse: separate; */
+  border-top-width: 8px;
+  border-top-style: solid;
 }
-thead td.name:first-child {
-  border-top-left-radius: 3px;
-}
-thead td.name:last-child {
-  border-top-right-radius: 3px;
-}
-  thead td.name.past {
+thead td.name.past {
   border-top-color: rgba(0,80,92,.8);
 }
 thead td.name.ongoing {
@@ -225,6 +209,12 @@ thead td.name.ongoing {
 }
 thead td.name.proposed {
   border-top-color: rgba(223,70,73,.8);
+}
+thead td.name:first-child {
+  border-top-left-radius: 3px;
+}
+thead td.name:last-child {
+  border-top-right-radius: 3px;
 }
 
 thead td .remove-icon {
@@ -241,8 +231,6 @@ thead td .remove-icon {
   font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  /* color: grey; */
-  /* display: inline; */
 }
 .card-dock .property-location-title {
   padding-top: 3px;
@@ -276,8 +264,6 @@ thead td .remove-icon {
 .property-value {
   font-size: 14px;
   padding-top: 5px;
-  /* margin: 0; */
-  /* max-height: 30px; */
   overflow: hidden;
   /* transition: max-height ease 0.8s; */
 }
@@ -288,11 +274,9 @@ thead td .remove-icon {
 /* TODO: mixin? (dry) */
 .property-cell .trigger-icon {
   position: absolute;
-  /* display: inline; */
   width: 14px;
   right: 5px;
   top: 9px;
-  /* user-select: none; */
 }
 
 .property-cell {
@@ -340,17 +324,16 @@ tr:nth-child(even) {background-color: #ffffff;}
 
   /* DOCK */
   /* for smaller screens, don't "dock" */
-  table.card-dock,
-  table.card-dock.maximized {
+  div.card-dock,
+  div.card-dock.maximized {
     position: absolute;
-    top: calc(100vh - 175px);
+    top: 100vh;
   }
 
-  table.card-dock thead td {
+  div.card-dock thead td {
     font-size: 20px;
     line-height: 32px;
     height: 80px;
-    /* padding-top: 20px; */
     /* make room for trigger-icon */
     padding-right: 40px;
   }
@@ -380,21 +363,21 @@ tr:nth-child(even) {background-color: #ffffff;}
     top: 20px;
   }
 
-  table.card-dock td {
+  div.card-dock td {
     padding: 22px;
   }
 
-  table.card-dock.card-count-1 {
+  div.card-dock.card-count-1 table {
     /* min-width: 325px; */
     width: 100%;
     max-width: unset;
   }
-  table.card-dock.card-count-2 {
+  div.card-dock.card-count-2 table {
     /* min-width: 650px; */
     width: 150%;
     max-width: unset;
   }
-  table.card-dock.card-count-3 {
+  div.card-dock.card-count-3 table {
     /* min-width: 975px; */
     width: 200%;
     max-width: unset;

@@ -231,7 +231,7 @@ function load () {
         id: row[EID.sheetId],
         geometry: {
           type: 'Point',
-          coordinates: [row[LONGITUDE.sheetId], row[LATITUDE.sheetId]]
+          coordinates: [row[LATITUDE.sheetId], row[LONGITUDE.sheetId]]
         },
         properties: row
       };
