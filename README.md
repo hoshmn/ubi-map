@@ -1,3 +1,5 @@
+Development continued [here](https://github.com/Hyperobjekt/bil-map) ([site](https://hyperobjekt.github.io/bil-map/)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
